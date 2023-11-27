@@ -32,9 +32,11 @@
     "test": "jest",
     "test:ci": "pnpm run test --coverage",
     "test:watch": "pnpm run test --watch",
-    "eas-build-pre-install": "./scripts/eas-pre-install",
+    "eas-build-pre-install": "bash ./scripts/eas-pre-install",
     "install-maestro": "curl -Ls 'https://get.maestro.mobile.dev' | bash",
-    "e2e-test": "maestro test .maestro/ -e APP_ID=com.obytes.development"
+    "e2e-test": "maestro test .maestro/ -e APP_ID=com.obytes.development",
+    "build:staging:android:local": "cross-env APP_ENV=staging EXPO_NO_DOTENV=1 eas build --profile staging --platform android --local",
+    "build:staging:inspect": "cross-env APP_ENV=staging EXPO_NO_DOTENV=1 eas build:inspect --platform android --stage archive --output ~/op/ --profile staging"
   },
   "dependencies": {
     "@bacons/link-assets": "^1.1.0",
