@@ -4,6 +4,7 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import React from 'react';
+import secrets from 'secrets.json';
 
 import { useAuth } from '@/core';
 import { FocusAwareStatusBar } from '@/ui';
@@ -16,7 +17,7 @@ export const Login = () => {
 
   GoogleSignin.configure({
     scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-    webClientId: '',
+    webClientId: secrets.googleSignIn.webClientId,
   });
   return (
     <>
