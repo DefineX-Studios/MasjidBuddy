@@ -16,7 +16,7 @@ export const Login = () => {
 
   GoogleSignin.configure({
     scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-    webClientId: 'YOUR CLIENT ID FROM GOOGLE CONSOLE',
+    webClientId: '',
   });
   return (
     <>
@@ -28,17 +28,25 @@ export const Login = () => {
           try {
             await GoogleSignin.hasPlayServices();
             const userInfo = await GoogleSignin.signIn();
+            console.log(JSON.stringify(userInfo));
             if (userInfo.idToken) {
               const { data, error } = await supabase.auth.signInWithIdToken({
                 provider: 'google',
                 token: userInfo.idToken,
               });
               console.log(error, data);
-              signIn({ access: 'access-token', refresh: 'refresh-token' });
+              const session = data.session;
+              if (!session) return;
+              signIn({
+                access: session.access_token,
+                refresh: session.refresh_token,
+              });
             } else {
               throw new Error('no ID token present!');
             }
           } catch (error: any) {
+            console.error(`error: ${error}`);
+
             if (error.code === statusCodes.SIGN_IN_CANCELLED) {
               // user cancelled the login flow
             } else if (error.code === statusCodes.IN_PROGRESS) {
