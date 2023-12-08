@@ -11,13 +11,11 @@ export const googleAuthMethod: AuthMethod = {
       scopes: ['https://www.googleapis.com/auth/drive.readonly'],
       webClientId: secrets.googleSignIn.webClientId,
     });
-    console.log(`signed in: ${JSON.stringify(GoogleSignin.isSignedIn())}`);
   },
   signIn: async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log(JSON.stringify(userInfo));
       return userInfo.idToken;
     } catch (error: any) {
       console.error(`error: ${error.code}`);
