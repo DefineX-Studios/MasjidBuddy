@@ -2,12 +2,13 @@ import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import React from 'react';
 
 import { signIn } from '@/core';
-import { googleSignIn, initializeGoogleSignIn } from '@/core/auth/googleSIgnIn';
+import { googleAuthMethod } from '@/core/auth/googleSIgnIn';
+import { AuthMethodType } from '@/core/auth/utils';
 import { supabaseLogin } from '@/core/supabase';
 import { FocusAwareStatusBar } from '@/ui';
 
 export const Login = () => {
-  initializeGoogleSignIn();
+  googleAuthMethod.initialize();
   return (
     <>
       <FocusAwareStatusBar />
@@ -15,7 +16,7 @@ export const Login = () => {
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Dark}
         onPress={async () => {
-          const idToken = await googleSignIn();
+          const idToken = await googleAuthMethod.signIn();
           if (!idToken) return;
 
           const session = await supabaseLogin(idToken);
@@ -24,6 +25,7 @@ export const Login = () => {
           await signIn({
             access: session.access_token,
             refresh: session.refresh_token,
+            type: AuthMethodType.GOOGLE,
           });
         }}
       />

@@ -1,8 +1,12 @@
 import { create } from 'zustand';
 
 import { createSelectors } from '../utils';
+import { googleAuthMethod } from './googleSIgnIn';
 import type { TokenType } from './utils';
 import { getToken, removeToken, setToken } from './utils';
+
+// when new auth method is added, need to include it in this list too
+const methods = [googleAuthMethod];
 
 interface AuthState {
   token: TokenType | null;
@@ -20,6 +24,12 @@ const _useAuth = create<AuthState>((set, get) => ({
     set({ status: 'signIn', token });
   },
   signOut: () => {
+    const usedType = getToken().type;
+    const method = methods.find((m) => m.type === usedType);
+    if (method) {
+      method.initialize();
+      method.signOut();
+    }
     removeToken();
     set({ status: 'signOut', token: null });
   },
