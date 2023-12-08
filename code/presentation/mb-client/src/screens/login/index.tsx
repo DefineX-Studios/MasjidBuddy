@@ -2,7 +2,7 @@ import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import React from 'react';
 
 import { signIn } from '@/core';
-import { googleAuthMethod } from '@/core/auth/googleSIgnIn';
+import { googleAuthMethod } from '@/core/auth/googleSignIn';
 import { AuthMethodType } from '@/core/auth/utils';
 import { supabaseLogin } from '@/core/supabase';
 import { FocusAwareStatusBar } from '@/ui';
