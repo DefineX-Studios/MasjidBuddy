@@ -7,9 +7,11 @@ import * as React from 'react';
 import type { SvgProps } from 'react-native-svg';
 
 import { Settings, Style } from '@/screens';
+import { HomeScreen } from '@/screens/home';
 import {
   colors,
   Feed as FeedIcon,
+  Home,
   Settings as SettingsIcon,
   Style as StyleIcon,
 } from '@/ui';
@@ -17,6 +19,7 @@ import {
 import { FeedNavigator } from './feed-navigator';
 
 type TabParamList = {
+  Home: undefined;
   Style: undefined;
   FeedNavigator: undefined;
   Settings: undefined;
@@ -35,6 +38,7 @@ type TabIconsType = {
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const tabsIcons: TabIconsType = {
+  Home: (props: SvgProps) => <Home {...props} />,
   Style: (props: SvgProps) => <StyleIcon {...props} />,
   FeedNavigator: (props: SvgProps) => <FeedIcon {...props} />,
   Settings: (props: SvgProps) => <SettingsIcon {...props} />,
@@ -46,6 +50,11 @@ export type TabList<T extends keyof TabParamList> = {
 };
 
 const tabs: TabType[] = [
+  {
+    name: 'Home',
+    component: HomeScreen,
+    label: 'Home',
+  },
   {
     name: 'Style',
     component: Style,
