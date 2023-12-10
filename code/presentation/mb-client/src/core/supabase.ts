@@ -7,10 +7,9 @@ import secrets from 'secrets.json';
 const supabase = createClient(secrets.supabase.url, secrets.supabase.key);
 
 export const supabaseLogin = async (idToken: string) => {
-  const { data, error } = await supabase.auth.signInWithIdToken({
+  const { data, error: _ } = await supabase.auth.signInWithIdToken({
     provider: 'google',
     token: idToken,
   });
-  console.log(error, data);
   return data.session;
 };
