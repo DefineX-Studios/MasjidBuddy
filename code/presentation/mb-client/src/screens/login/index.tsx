@@ -3,7 +3,6 @@ import React from 'react';
 
 import { signIn } from '@/core';
 import { googleAuthMethod } from '@/core/auth/googleSignIn';
-import { AuthMethodType } from '@/core/auth/utils';
 import { FocusAwareStatusBar } from '@/ui';
 
 export const Login = () => {
@@ -14,7 +13,7 @@ export const Login = () => {
       <GoogleSigninButton
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Dark}
-        onPress={() => signIn(AuthMethodType.GOOGLE)}
+        onPress={() => signIn('Google')}
       />
     </>
   );

@@ -2,12 +2,8 @@ import { create } from 'zustand';
 
 import { supabaseLogin } from '../supabase';
 import { createSelectors } from '../utils';
-import { googleAuthMethod } from './googleSignIn';
-import type { AuthMethodType, TokenType } from './utils';
-import { getToken, removeToken, setToken } from './utils';
-
-// when new auth provider is added, need to include it in this list too
-const methods = [googleAuthMethod];
+import type { AuthMethodList, TokenType } from './utils';
+import { getToken, methods, removeToken, setToken } from './utils';
 
 interface AuthState {
   token: TokenType | null;
@@ -64,7 +60,7 @@ export const useAuth = createSelectors(_useAuth);
 
 export const signOut = () => _useAuth.getState().signOut();
 export const hydrateAuth = () => _useAuth.getState().hydrate();
-export const signIn = async (type: AuthMethodType) => {
+export const signIn = async (type: keyof AuthMethodList) => {
   const method = methods.find((m) => m.type === type);
 
   if (!method) return;

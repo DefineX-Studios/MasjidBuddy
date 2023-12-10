@@ -2,10 +2,9 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import secrets from 'secrets.json';
 
 import type { AuthMethod } from './utils';
-import { AuthMethodType } from './utils';
 
 export const googleAuthMethod: AuthMethod = {
-  type: AuthMethodType.GOOGLE,
+  type: 'Google',
   initialize: () => {
     GoogleSignin.configure({
       scopes: ['https://www.googleapis.com/auth/drive.readonly'],
