@@ -13,4 +13,6 @@ yarn-error.log
 /coverage
 # macOS
 .DS_Store
-secrets.json
+
+# change to .env* when we start using staging/prod
+.env.development
