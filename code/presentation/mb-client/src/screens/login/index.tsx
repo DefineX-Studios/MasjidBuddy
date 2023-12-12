@@ -1,24 +1,20 @@
+import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import React from 'react';
 
-import { useAuth } from '@/core';
-import { useSoftKeyboardEffect } from '@/core/keyboard';
+import { signIn } from '@/core';
+import { googleAuthMethod } from '@/core/auth/google-signin';
 import { FocusAwareStatusBar } from '@/ui';
 
-import type { LoginFormProps } from './login-form';
-import { LoginForm } from './login-form';
-
 export const Login = () => {
-  const signIn = useAuth.use.signIn();
-  useSoftKeyboardEffect();
-
-  const onSubmit: LoginFormProps['onSubmit'] = (data) => {
-    console.log(data);
-    signIn({ access: 'access-token', refresh: 'refresh-token' });
-  };
+  googleAuthMethod.initialize();
   return (
     <>
       <FocusAwareStatusBar />
-      <LoginForm onSubmit={onSubmit} />
+      <GoogleSigninButton
+        size={GoogleSigninButton.Size.Wide}
+        color={GoogleSigninButton.Color.Dark}
+        onPress={() => signIn('Google')}
+      />
     </>
   );
 };
