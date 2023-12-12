@@ -1,6 +1,6 @@
 import { getItem, removeItem, setItem } from '@/core/storage';
 
-import { googleAuthMethod } from './googleSignIn';
+import { googleAuthMethod } from './google-signin';
 
 const TOKEN = 'token';
 

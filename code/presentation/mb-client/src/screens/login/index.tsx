@@ -2,7 +2,7 @@ import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import React from 'react';
 
 import { signIn } from '@/core';
-import { googleAuthMethod } from '@/core/auth/googleSignIn';
+import { googleAuthMethod } from '@/core/auth/google-signin';
 import { FocusAwareStatusBar } from '@/ui';
 
 export const Login = () => {
