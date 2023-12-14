@@ -1,13 +1,45 @@
+import { FlashList } from '@shopify/flash-list';
 import React from 'react';
 
-import { FocusAwareStatusBar, Text, View } from '@/ui';
+import type { Masjid } from '@/api/masjid';
+import { useMasjids } from '@/api/masjid/use-masjids';
+import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
+
+import { MasjidCard } from './masjid';
 
 export const HomeScreen = () => {
+  const result = useMasjids();
+  const { data, isLoading, isError } = result;
+
+  const renderItem = React.useCallback(
+    ({ item }: { item: Masjid }) => (
+      <MasjidCard
+        {...item}
+        onPress={() => console.info(`Masjid ${item.name} pressed`)}
+      />
+    ),
+    []
+  );
+
+  if (isError) {
+    return (
+      <View>
+        <Text> Error Loading data </Text>
+      </View>
+    );
+  }
+
   return (
     <>
-      <FocusAwareStatusBar />
-      <View>
-        <Text variant="h1">this is home</Text>
+      <View className="flex-1 ">
+        <FocusAwareStatusBar />
+        <FlashList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(_, index) => `item-${index}`}
+          ListEmptyComponent={<EmptyList isLoading={isLoading} />}
+          estimatedItemSize={300}
+        />
       </View>
     </>
   );
