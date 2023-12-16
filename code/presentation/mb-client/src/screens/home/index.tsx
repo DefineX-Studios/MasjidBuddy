@@ -15,7 +15,7 @@ export const HomeScreen = () => {
     ({ item }: { item: Masjid }) => (
       <MasjidCard
         {...item}
-        onPress={() => console.info(`Masjid ${item.name} pressed`)}
+        onPress={() => console.info(`${item.name} pressed`)}
       />
     ),
     []
@@ -36,9 +36,10 @@ export const HomeScreen = () => {
         <FlashList
           data={data}
           renderItem={renderItem}
+          numColumns={2}
           keyExtractor={(_, index) => `item-${index}`}
           ListEmptyComponent={<EmptyList isLoading={isLoading} />}
-          estimatedItemSize={300}
+          estimatedItemSize={20}
         />
       </View>
     </>
