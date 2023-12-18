@@ -8,13 +8,13 @@ export type Masjid = {
   namaz_timings: NamazTimings;
 };
 
-type Address = {
+export type Address = {
   line1: string;
   line2: string;
   pin: string;
 };
 
-type NamazTimings = {
+export type NamazTimings = {
   fajar: string;
   zohar: string;
   jummah: string;
@@ -22,6 +22,3 @@ type NamazTimings = {
   magrib: string;
   isha: string;
 };
-
-export const AddressString = (a: Address) =>
-  [a.line1, a.line2, a.pin].join(',\n');
