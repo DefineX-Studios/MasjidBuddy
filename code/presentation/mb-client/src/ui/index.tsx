@@ -1,3 +1,4 @@
+export * from './audio-player';
 export * from './core';
 export * from './error-handler';
 export * from './focus-aware-status-bar';
