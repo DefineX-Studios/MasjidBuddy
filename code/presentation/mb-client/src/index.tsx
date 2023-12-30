@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-
+import TrackPlayer from 'react-native-track-player';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import * as SplashScreen from 'expo-splash-screen';
 import React from 'react';
@@ -10,6 +10,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { APIProvider } from '@/api';
 import { hydrateAuth, loadSelectedTheme } from '@/core';
 import { RootNavigator } from '@/navigation';
+
+//Setup audio player
+console.log('Setting up audio player');
+TrackPlayer.setupPlayer();
 
 hydrateAuth();
 loadSelectedTheme();
