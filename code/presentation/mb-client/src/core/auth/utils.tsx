@@ -5,7 +5,7 @@ import { googleAuthMethod } from './google-signin';
 const TOKEN = 'token';
 
 export type AuthMethodList = {
-  Google: undefined;
+  google: undefined;
 };
 
 export type AuthMethod = {

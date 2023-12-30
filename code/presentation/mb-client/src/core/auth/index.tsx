@@ -68,7 +68,7 @@ export const signIn = async (type: keyof AuthMethodList) => {
   const idToken = await method.signIn();
   if (!idToken) return;
 
-  const session = await supabaseLogin(idToken);
+  const session = await supabaseLogin(idToken, type);
   if (!session) return;
 
   await _useAuth.getState().signIn({
