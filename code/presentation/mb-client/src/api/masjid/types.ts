@@ -8,6 +8,11 @@ export type Masjid = {
   namaz_timings: NamazTimings;
 };
 
+export type MasjidWithDistance = {
+  masjid: Masjid;
+  distance: number;
+};
+
 export type Address = {
   line1: string;
   line2: string;

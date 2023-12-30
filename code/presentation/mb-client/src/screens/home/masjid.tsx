@@ -1,18 +1,14 @@
 import React from 'react';
 
-import { type Masjid } from '@/api/masjid';
+import type { MasjidWithDistance } from '@/api/masjid';
 import { convertTimeToAMPM, getNextNamaz } from '@/api/masjid/util';
 import { Pressable, Text, View } from '@/ui';
 
-type Props = Masjid & { onPress?: () => void };
+type Props = MasjidWithDistance & { onPress?: () => void };
 
-export const MasjidCard = ({
-  name,
-  namaz_timings,
-  onPress = () => {},
-}: Props) => {
+export const MasjidCard = ({ distance, masjid, onPress = () => {} }: Props) => {
   const currentTime = new Date().toLocaleTimeString();
-  const nextNamaz = getNextNamaz(currentTime, namaz_timings);
+  const nextNamaz = getNextNamaz(currentTime, masjid.namaz_timings);
 
   // todo localize namaz names instead
   return (
@@ -22,7 +18,7 @@ export const MasjidCard = ({
     >
       <View>
         <Text variant="md" className="pb-1 text-center font-bold">
-          {name}
+          {masjid.name}
         </Text>
       </View>
 
@@ -41,7 +37,7 @@ export const MasjidCard = ({
         </View>
 
         <Text variant="xxs" className="pb-1 text-center">
-          Within 50m
+          Within {distance.toFixed(2)}km
         </Text>
       </View>
 

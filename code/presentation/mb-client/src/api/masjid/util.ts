@@ -1,9 +1,38 @@
 import type { Address, NamazTimings } from './types';
 
+const EARTH_RADIUS: number = 6371;
+
 type NamazTime = {
   namaz: keyof NamazTimings;
   time: string;
 };
+
+type Location = {
+  lat: number;
+  lon: number;
+};
+
+export function getDistanceFromLocationInKm(a: Location, b: Location): number {
+  const deltaLat: number = deg2rad(b.lat - a.lat); // deg2rad below
+  const deltaLon: number = deg2rad(b.lon - a.lon);
+
+  const angularDistance: number =
+    Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+    Math.cos(deg2rad(a.lat)) *
+      Math.cos(deg2rad(b.lat)) *
+      Math.sin(deltaLon / 2) *
+      Math.sin(deltaLon / 2);
+
+  const centralAngle: number =
+    2 * Math.atan2(Math.sqrt(angularDistance), Math.sqrt(1 - angularDistance));
+
+  const distance: number = EARTH_RADIUS * centralAngle; // Distance in km
+  return distance;
+}
+
+export function deg2rad(deg: number): number {
+  return deg * (Math.PI / 180);
+}
 
 export const AddressString = (a: Address) =>
   [a.line1, a.line2, a.pin].join(',\n');

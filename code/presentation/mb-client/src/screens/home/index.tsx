@@ -1,7 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import React from 'react';
 
-import type { Masjid } from '@/api/masjid';
+import type { MasjidWithDistance } from '@/api/masjid';
 import { useMasjids } from '@/api/masjid/use-masjids';
 import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
 
@@ -12,10 +12,10 @@ export const HomeScreen = () => {
   const { data, isLoading, isError } = result;
 
   const renderItem = React.useCallback(
-    ({ item }: { item: Masjid }) => (
+    ({ item }: { item: MasjidWithDistance }) => (
       <MasjidCard
         {...item}
-        onPress={() => console.info(`${item.name} pressed`)}
+        onPress={() => console.info(`${item.masjid.name} pressed`)}
       />
     ),
     []
