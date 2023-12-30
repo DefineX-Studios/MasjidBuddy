@@ -34,13 +34,7 @@ export const Root = () => {
       {isFirstTime ? (
         <Stack.Screen name="Onboarding" component={Onboarding} />
       ) : (
-        <Stack.Group>
-          {status === 'signOut' ? (
-            <Stack.Screen name="Auth" component={AuthNavigator} />
-          ) : (
-            <Stack.Screen name="App" component={TabNavigator} />
-          )}
-        </Stack.Group>
+        <Stack.Screen name="App" component={TabNavigator} />
       )}
     </Stack.Navigator>
   );
