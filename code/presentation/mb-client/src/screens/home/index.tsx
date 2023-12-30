@@ -3,7 +3,14 @@ import React from 'react';
 
 import type { MasjidWithDistance } from '@/api/masjid';
 import { useMasjids } from '@/api/masjid/use-masjids';
-import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
+import {
+  EmptyList,
+  FocusAwareStatusBar,
+  Pressable,
+  Search,
+  Text,
+  View,
+} from '@/ui';
 
 import { MasjidCard } from './masjid';
 
@@ -41,6 +48,21 @@ export const HomeScreen = () => {
           ListEmptyComponent={<EmptyList isLoading={isLoading} />}
           estimatedItemSize={20}
         />
+
+        <Pressable
+          className="bg-neutral-50 p-3 dark:bg-charcoal-800"
+          onPress={() => {
+            console.info('Search from here');
+          }}
+        >
+          <View className="flex flex-row items-center">
+            <Search />
+
+            <Text variant="md" className="flex-1 text-center">
+              FIND NEARBY MASJIDS
+            </Text>
+          </View>
+        </Pressable>
       </View>
     </>
   );
