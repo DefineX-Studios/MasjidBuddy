@@ -28,7 +28,7 @@ export const HomeScreen = () => {
     []
   );
 
-  if (isError) {
+  if (isError || (!isLoading && data == null)) {
     return (
       <View>
         <Text> Error Loading data </Text>
