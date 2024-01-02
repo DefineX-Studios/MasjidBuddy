@@ -2,36 +2,68 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-native';
 import type { Track } from 'react-native-track-player';
-import TrackPlayer, { TrackType } from 'react-native-track-player';
-
+import TrackPlayer, { State, Event, useTrackPlayerEvents, TrackType } from 'react-native-track-player';
+const url = 'http://stream.example.com:8000/radio/hls.m3u8';
+console.log(url)
 const streamDetails: Track = {
-  url: 'http://localhost:3000/stream',
+  url: url,
   title: 'Test Stream',
   artist: 'Test Artist',
   isLiveStream: true,
-  type: TrackType.HLS,
+  type: 'hls',
 };
+console.log('Setting up audio player');
+TrackPlayer.setupPlayer().then(() => {
+  console.log('Player ready');
+  TrackPlayer.add(streamDetails).then(() => {
 
-TrackPlayer.add(streamDetails);
+  });
+    }).catch((err) => {
+      console.log('Error setting up player', err);
+  });
+
+
+
+const state = TrackPlayer.getPlaybackState()
+
+
 
 export const MusicPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
 
-  useEffect(() => {
-    if (isPlaying) {
+  console.log('MusicPlayer');
+  useTrackPlayerEvents([Event.PlaybackState], (data)=>{
+    console.log('useTrackPlayerEvents', data);
+  });
+  
+  const [isPlaying, setIsPlaying] = useState(false);
+  if (isPlaying) {
+    console.log('Trying to play');
+    TrackPlayer.play().then(() => {
       console.log('Playing');
-      TrackPlayer.play();
-    } else {
+      TrackPlayer.getPlaybackState().then((state) => {
+        console.log('Playback state', state);
+      });
+    });
+    
+  } else {
+    
+    TrackPlayer.pause().then(() => {
       console.log('Paused');
-      TrackPlayer.pause();
-    }
-  }, [isPlaying]);
+      TrackPlayer.getPlaybackState().then((state) => {
+        console.log('Playback state', state);
+      });
+    
+    });
+  }
+  
+
+  
 
   //Make an onPress function to play and pause
   const onButtonPress = () => setIsPlaying(!isPlaying);
 
   return (
     //return a button with onpress
-    <Button title={isPlaying ? 'Pause' : 'Play'} onPress={onButtonPress} />
+    <Button title={isPlaying ? 'Pause'+url : 'Play'} onPress={onButtonPress} />
   );
 };
