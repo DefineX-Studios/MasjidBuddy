@@ -12,8 +12,7 @@ import { hydrateAuth, loadSelectedTheme } from '@/core';
 import { RootNavigator } from '@/navigation';
 
 //Setup audio player
-console.log('Setting up audio player');
-TrackPlayer.setupPlayer();
+
 
 hydrateAuth();
 loadSelectedTheme();
