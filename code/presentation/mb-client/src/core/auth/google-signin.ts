@@ -17,7 +17,7 @@ export const googleAuthMethod: AuthMethod = {
       const userInfo = await GoogleSignin.signIn();
       return userInfo.idToken;
     } catch (error: any) {
-      console.error(`error: ${error.code}`);
+      console.error(`${error}`);
     }
 
     return null;

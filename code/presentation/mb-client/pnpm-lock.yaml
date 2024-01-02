@@ -107,6 +107,9 @@ dependencies:
   react-native-gesture-handler:
     specifier: ~2.12.0
     version: 2.12.0(react-native@0.72.6)(react@18.2.0)
+  react-native-get-location:
+    specifier: ^4.0.1
+    version: 4.0.1(react-native@0.72.6)
   react-native-mmkv:
     specifier: 2.6.3
     version: 2.6.3(react-native@0.72.6)(react@18.2.0)
@@ -11234,6 +11237,14 @@ packages:
       lodash: 4.17.21
       prop-types: 15.8.1
       react: 18.2.0
+      react-native: 0.72.6(@babel/core@7.21.0)(@babel/preset-env@7.22.10)(react@18.2.0)
+    dev: false
+
+  /react-native-get-location@4.0.1(react-native@0.72.6):
+    resolution: {integrity: sha512-blDWHI7f+gfzXbrrlFNRjpVMuuMTng3hsKR0Yi3iPNIM5LRs0EJDYvvdQaauFk7mJPryOxRE3+A5XAr+3kkpFg==}
+    peerDependencies:
+      react-native: '>=0.60'
+    dependencies:
       react-native: 0.72.6(@babel/core@7.21.0)(@babel/preset-env@7.22.10)(react@18.2.0)
     dev: false
 
