@@ -4,12 +4,13 @@ import { googleAuthMethod } from './google-signin';
 
 const TOKEN = 'token';
 
-export type AuthMethodList = {
-  google: undefined;
+// key should match provider parameter required by supabase
+export const AuthMethods = {
+  google: googleAuthMethod,
 };
 
 export type AuthMethod = {
-  type: keyof AuthMethodList;
+  type: keyof typeof AuthMethods;
   initialize: () => void;
   signIn: () => Promise<string | null>;
   signOut: () => void;
@@ -18,10 +19,8 @@ export type AuthMethod = {
 export type TokenType = {
   access: string;
   refresh: string;
-  type: keyof AuthMethodList;
+  type: keyof typeof AuthMethods;
 };
-
-export const methods: AuthMethod[] = [googleAuthMethod];
 
 export const getToken = () => getItem<TokenType>(TOKEN);
 export const removeToken = () => removeItem(TOKEN);
