@@ -5,7 +5,7 @@ import { useColorScheme } from 'nativewind';
 import * as React from 'react';
 import type { SvgProps } from 'react-native-svg';
 
-import { entries, typeValidate as valueTypeValidator } from '@/core';
+import { entries } from '@/core';
 import { Settings, Style } from '@/screens';
 import { HomeScreen } from '@/screens/home';
 import {
@@ -18,7 +18,7 @@ import {
 
 import { FeedNavigator } from './feed-navigator';
 
-const TabsInfo = valueTypeValidator({
+const TabsInfo = {
   Home: {
     component: HomeScreen,
     label: 'Home',
@@ -39,7 +39,7 @@ const TabsInfo = valueTypeValidator({
     label: 'Settings',
     icon: (props: SvgProps) => <SettingsIcon {...props} />,
   },
-});
+};
 
 const Tab = createBottomTabNavigator<typeof TabsInfo>();
 
