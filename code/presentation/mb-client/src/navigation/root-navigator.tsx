@@ -9,6 +9,7 @@ import { Onboarding } from '@/screens';
 import { AuthNavigator } from './auth-navigator';
 import { NavigationContainer } from './navigation-container';
 import { TabNavigator } from './tab-navigator';
+import { MasjidNavigator } from './masjid-navigator';
 const Stack = createNativeStackNavigator();
 
 export const Root = () => {
