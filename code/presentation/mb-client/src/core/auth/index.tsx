@@ -2,8 +2,8 @@ import { create } from 'zustand';
 
 import { supabaseLogin } from '../supabase';
 import { createSelectors } from '../utils';
-import type { AuthMethodList, TokenType } from './utils';
-import { getToken, methods, removeToken, setToken } from './utils';
+import type { TokenType } from './utils';
+import { AuthMethods, getToken, removeToken, setToken } from './utils';
 
 interface AuthState {
   token: TokenType | null;
@@ -26,7 +26,7 @@ const _useAuth = create<AuthState>((set, get) => ({
 
     //sign out from the auth provider
     if (userType) {
-      const method = methods.find((m) => m.type === userType.type);
+      const method = AuthMethods[userType.type];
       if (method) {
         method.initialize();
         method.signOut();
@@ -60,15 +60,15 @@ export const useAuth = createSelectors(_useAuth);
 
 export const signOut = () => _useAuth.getState().signOut();
 export const hydrateAuth = () => _useAuth.getState().hydrate();
-export const signIn = async (type: keyof AuthMethodList) => {
-  const method = methods.find((m) => m.type === type);
+export const signIn = async (type: keyof typeof AuthMethods) => {
+  const method = AuthMethods[type];
 
   if (!method) return;
 
   const idToken = await method.signIn();
   if (!idToken) return;
 
-  const session = await supabaseLogin(idToken);
+  const session = await supabaseLogin(idToken, type);
   if (!session) return;
 
   await _useAuth.getState().signIn({

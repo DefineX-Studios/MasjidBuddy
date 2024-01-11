@@ -13,7 +13,7 @@ export const Login = () => {
       <GoogleSigninButton
         size={GoogleSigninButton.Size.Wide}
         color={GoogleSigninButton.Color.Dark}
-        onPress={() => signIn('Google')}
+        onPress={() => signIn('google')}
       />
     </>
   );

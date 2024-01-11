@@ -5,6 +5,7 @@ export * from './home';
 export * from './language';
 export * from './no-data';
 export * from './rate';
+export * from './search';
 export * from './settings';
 export * from './share';
 export * from './style';
