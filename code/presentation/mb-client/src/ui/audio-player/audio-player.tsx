@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'react-native';
 import type { Track } from 'react-native-track-player';
 import TrackPlayer, { State, Event, useTrackPlayerEvents, TrackType } from 'react-native-track-player';
+//This is the link used by rocket streaming service for live streaming audio using hls. Check rocket docs for setup info.
 const url = 'http://stream.example.com:8000/radio/hls.m3u8';
 console.log(url)
 const streamDetails: Track = {
