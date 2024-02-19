@@ -16,6 +16,7 @@ import {
 } from '@/ui';
 
 import { FeedNavigator } from './feed-navigator';
+<<<<<<< Updated upstream
 import { MasjidNavigator } from '@/navigation/masjid-navigator';
 
 type TabParamList = {
@@ -52,6 +53,18 @@ export type TabList<T extends keyof TabParamList> = {
 const tabs: TabType[] = [
   {
     name: 'Style',
+=======
+import FindMasjid from '@/screens/home/find-masjid';
+import {HomeNavigator} from './home-navigator';
+
+const TabsInfo = {
+  Home: {
+    component: HomeNavigator,
+    label: 'Home',
+    icon: (props: SvgProps) => <Home {...props} />,
+  },
+  Style: {
+>>>>>>> Stashed changes
     component: Style,
     label: 'Style',
   },

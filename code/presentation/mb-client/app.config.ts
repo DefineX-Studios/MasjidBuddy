@@ -31,6 +31,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#2E3C4B',
+
+    },  
+    config:{
+      googleMaps:{
+        apiKey:'AIzaSyBSYXHAL69732Xz4HLSkFvBipbZ1wpfxAQ'
+      }
     },
     package: Env.PACKAGE,
   },
