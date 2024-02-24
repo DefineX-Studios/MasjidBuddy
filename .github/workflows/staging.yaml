@@ -23,6 +23,6 @@ jobs:
           version: latest
 
       - run: |
-          cd code\backend\mb-supabase
+          cd code/backend/mb-supabase
           supabase link --project-ref $SUPABASE_PROJECT_ID
           supabase db push
