@@ -12,6 +12,7 @@ import { Item } from './item';
 import { ItemsContainer } from './items-container';
 import { LanguageItem } from './language-item';
 import { ThemeItem } from './theme-item';
+import { DebugItem } from './debug';
 
 export const Settings = () => {
   const signOut = useAuth.use.signOut();
@@ -27,6 +28,7 @@ export const Settings = () => {
           <Text variant="lg" className="font-bold">
             {translate('settings.title')}
           </Text>
+          
           <ItemsContainer title="settings.generale">
             <LanguageItem />
             <ThemeItem />
@@ -35,6 +37,7 @@ export const Settings = () => {
           <ItemsContainer title="settings.about">
             <Item text="settings.app_name" value={Env.NAME} />
             <Item text="settings.version" value={Env.VERSION} />
+            <DebugItem />
           </ItemsContainer>
 
           <ItemsContainer title="settings.support_us">

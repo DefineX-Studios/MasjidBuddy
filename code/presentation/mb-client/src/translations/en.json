@@ -3,6 +3,7 @@
     "message": "Welcome to obytes app site"
   },
   "settings": {
+    "debug": "Debug",
     "about": "About",
     "app_name": "App Name",
     "arabic": "Arabic",
