@@ -22,6 +22,8 @@ export type TokenType = {
   type: keyof typeof AuthMethods;
 };
 
+//todo this is pretty unreadable, u dont get any idea that this is only saving in storage
+//  maybe create tokenStorage object which get,set,remove functions
 export const getToken = () => getItem<TokenType>(TOKEN);
 export const removeToken = () => removeItem(TOKEN);
 export const setToken = (value: TokenType) => setItem<TokenType>(TOKEN, value);
