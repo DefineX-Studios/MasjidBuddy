@@ -2,7 +2,7 @@ import type { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
 import GetLocation from 'react-native-get-location';
 
-import { supabase } from '@/core/supabase';
+import * as supabase from '@/core/supabase';
 
 import type { Masjid, MasjidWithDistance } from './types';
 import { getDistanceFromLocationInKm } from './util';
@@ -11,9 +11,7 @@ export const useMasjids = () => {
   return useQuery({
     queryKey: ['masjids'],
     queryFn: async () => {
-      const result: PostgrestSingleResponse<Masjid[]> = await supabase.rpc(
-        'get_masjids_with_namaz_timings'
-      );
+      const result: PostgrestSingleResponse<Masjid[]> = await supabase.masjid.getAll();
 
       const { data, error: _err } = result;
 
