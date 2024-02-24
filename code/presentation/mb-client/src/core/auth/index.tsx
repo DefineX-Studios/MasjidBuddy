@@ -1,15 +1,20 @@
 import { create } from 'zustand';
 
-import { supabaseLogin } from '../supabase';
+import * as supabase from '../supabase';
 import { createSelectors } from '../utils';
 import type { TokenType } from './utils';
 import { AuthMethods, getToken, removeToken, setToken } from './utils';
+import { hydrate } from '@tanstack/react-query';
+import { get } from 'react-hook-form';
+import { set } from 'zod';
 
 interface AuthState {
   token: TokenType | null;
   status: 'idle' | 'signOut' | 'signIn';
 
-  signIn: (data: TokenType) => void;
+  _setAndStore: (token: TokenType) => void;
+
+  signIn: (type: keyof typeof AuthMethods) => void;
   signOut: () => void;
   hydrate: () => void;
 }
@@ -17,9 +22,24 @@ interface AuthState {
 const _useAuth = create<AuthState>((set, get) => ({
   status: 'idle',
   token: null,
-  signIn: (token) => {
+
+  _setAndStore(token: TokenType){
     setToken(token);
-    set({ status: 'signIn', token });
+    set({status: 'signIn', token});
+  },
+
+  async signIn(type: keyof typeof AuthMethods) {
+    const method = AuthMethods[type];
+  
+    if (!method) return;
+  
+    const idToken = await method.signIn();
+    if (!idToken) return;
+  
+    const token = await supabase.login(idToken, type);
+    if (!token) return;
+
+    this._setAndStore(token);
   },
   signOut: () => {
     const userType = getToken();
@@ -41,11 +61,20 @@ const _useAuth = create<AuthState>((set, get) => ({
    * runs the signIn/signOut function again so that status is updated,
    * triggering splash screen to go away and root-navigator to decide which navigator to use
    */
-  hydrate: () => {
+  async hydrate() {
     try {
-      const userToken = getToken();
-      if (userToken !== null) {
-        get().signIn(userToken);
+      const token = getToken();
+      
+      if (token !== null) {
+        
+        const newToken = await supabase.setSession(token);
+        if(newToken == null){
+          console.error("unable to re authenticate, logging out...")
+          get().signOut();
+          return;
+        }
+
+        this._setAndStore(newToken);
       } else {
         get().signOut();
       }
@@ -60,20 +89,4 @@ export const useAuth = createSelectors(_useAuth);
 
 export const signOut = () => _useAuth.getState().signOut();
 export const hydrateAuth = () => _useAuth.getState().hydrate();
-export const signIn = async (type: keyof typeof AuthMethods) => {
-  const method = AuthMethods[type];
-
-  if (!method) return;
-
-  const idToken = await method.signIn();
-  if (!idToken) return;
-
-  const session = await supabaseLogin(idToken, type);
-  if (!session) return;
-
-  await _useAuth.getState().signIn({
-    access: session.access_token,
-    refresh: session.refresh_token,
-    type,
-  });
-};
+export const signIn = (type: keyof typeof AuthMethods) => _useAuth.getState().signIn(type);
