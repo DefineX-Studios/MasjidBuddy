@@ -17,7 +17,7 @@ import { MasjidCard } from './masjid';
 export const HomeScreen = () => {
   const result = useMasjids();
   const { data, isLoading, isError } = result;
-
+  console.log("The result is :" +JSON.stringify(result));
   const renderItem = React.useCallback(
     ({ item }: { item: MasjidWithDistance }) => (
       <MasjidCard

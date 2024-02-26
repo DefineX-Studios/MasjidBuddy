@@ -1,16 +1,18 @@
 export type Masjid = {
-  uuid: string;
+  id:number;
   name: string;
   address: Address;
   mobile_no: string;
   longitude: number;
   latitude: number;
   namaz_timings: NamazTimings;
+ 
 };
 
 export type MasjidWithDistance = {
   masjid: Masjid;
   distance: number;
+
 };
 
 export type Address = {

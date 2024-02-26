@@ -44,6 +44,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     favicon: './assets/favicon.png',
   },
   plugins: [
+    [
+      "expo-location",
+      {
+        "locationAlwaysAndWhenInUsePermission": "Allow MasjidBuddy to use your location."
+      }
+    ],
     ['@bacons/link-assets', ['./assets/fonts/Inter.ttf']],
     'expo-localization',
     [

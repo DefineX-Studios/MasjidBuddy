@@ -1,6 +1,7 @@
 import type { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
-import GetLocation from 'react-native-get-location';
+import * as Location from 'expo-location'; // Importing Location module from Expo
+import { Platform } from 'react-native';
 
 import { supabase } from '@/core/supabase';
 
@@ -19,11 +20,26 @@ export const useMasjids = () => {
 
       if (data == null) return null;
 
-      const location = await GetLocation.getCurrentPosition({
-        enableHighAccuracy: true,
-        timeout: 60000,
-      });
-      const fromLoc = { lon: location.longitude, lat: location.latitude };
+      let location = null;
+      if (Platform.OS === 'android') {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          console.log('Permission to access location was denied');
+          return null;
+        }
+        location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Highest,
+        });
+      } else {
+        location = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Highest,
+        });
+      }
+
+      const fromLoc = {
+        lon: location.coords.longitude,
+        lat: location.coords.latitude,
+      };
 
       const masjidsWithDistance: MasjidWithDistance[] = [];
 
