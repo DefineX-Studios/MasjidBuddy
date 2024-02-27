@@ -1,13 +1,6 @@
 import * as Location from 'expo-location';
 import React, { useState } from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Dimensions, StyleSheet, TextInput, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { enableLatestRenderer } from 'react-native-maps';
 
@@ -49,6 +42,21 @@ const styles = StyleSheet.create({
   },
 });
 
+const fetchUserLocation = async (setUserLocation: Function) => {
+  try {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
+      return;
+    }
+    let location = await Location.getCurrentPositionAsync({});
+    const { latitude, longitude } = location.coords;
+    setUserLocation({ latitude, longitude });
+  } catch (error) {
+    console.error('Error getting user location:', error);
+  }
+};
+
 const FindMasjid = () => {
   const result = useMasjids();
   const { data: masjidsWithDistance } = result;
@@ -57,23 +65,8 @@ const FindMasjid = () => {
     longitude: number;
   }>(null);
 
-  const getLocation = async () => {
-    try {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
-        return;
-      }
-      let location = await Location.getCurrentPositionAsync({});
-      const { latitude, longitude } = location.coords;
-      setUserLocation({ latitude, longitude });
-    } catch (error) {
-      console.error('Error getting user location:', error);
-    }
-  };
-
   if (!userLocation) {
-    getLocation();
+    fetchUserLocation(setUserLocation);
   }
 
   return (
@@ -108,11 +101,22 @@ const FindMasjid = () => {
           )}
         </MapView>
       </View>
-      <View style={styles.buttonContainer}>
-        <TextInput style={styles.input} placeholder="Search..." />
-        <TouchableOpacity onPress={() => console.log('Search button pressed')}>
-          <Text style={styles.buttonText}>Search</Text>
-        </TouchableOpacity>
+      <View style={{ position: 'absolute', top: 10, width: '100%' }}>
+        <TextInput
+          style={{
+            borderRadius: 10,
+            margin: 10,
+            color: '#000',
+            borderColor: '#666',
+            backgroundColor: '#FFF',
+            borderWidth: 1,
+            height: 45,
+            paddingHorizontal: 10,
+            fontSize: 18,
+          }}
+          placeholder={'Search'}
+          placeholderTextColor={'#666'}
+        />
       </View>
     </View>
   );
