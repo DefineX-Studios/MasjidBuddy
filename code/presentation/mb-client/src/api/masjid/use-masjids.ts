@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import * as Location from 'expo-location'; // Importing Location module from Expo
 import { Platform } from 'react-native';
 
-import { supabase } from '@/core/supabase';
+import * as supabase from '@/core/supabase';
 
 import type { Masjid, MasjidWithDistance } from './types';
 import { getDistanceFromLocationInKm } from './util';
@@ -12,9 +12,7 @@ export const useMasjids = () => {
   return useQuery({
     queryKey: ['masjids'],
     queryFn: async () => {
-      const result: PostgrestSingleResponse<Masjid[]> = await supabase.rpc(
-        'get_masjids_with_namaz_timings'
-      );
+      const result: PostgrestSingleResponse<Masjid[]> = await supabase.masjid.getAll();
 
       const { data, error: _err } = result;
 

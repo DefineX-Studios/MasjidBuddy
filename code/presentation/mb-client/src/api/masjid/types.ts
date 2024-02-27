@@ -1,5 +1,9 @@
 export type Masjid = {
+<<<<<<< HEAD
   id:number;
+=======
+  id: string;
+>>>>>>> main
   name: string;
   address: Address;
   mobile_no: string;

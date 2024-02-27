@@ -22,12 +22,12 @@ SET row_security = off;
 -- Data for Name: masjid; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO "public"."masjid" ("id", "created_at", "address", "mobile_no", "uuid", "name", "longitude", "latitude") VALUES
-	(17, '2023-12-16 09:42:10.074932+00', '{"line1": "123 Main St", "line2": "Apt 4", "pin": "12345"}', '123-456-7890', '41d8c44a-1865-4ec1-8df4-dd64ff973f55', 'Masjid A', 40.7128, -74.0060),
-	(18, '2023-12-16 09:42:10.074932+00', '{"line1": "456 Oak St", "line2": "Suite 7", "pin": "56789"}', '987-654-3210', 'c1cd543a-6215-4d3b-8c9b-df05627f9413', 'Masjid B', 34.0522, -118.2437),
-	(20, '2023-12-16 09:42:10.074932+00', '{"line1": "987 Pine St", "line2": "Apt 23", "pin": "78901"}', '999-888-7777', '5fa6db88-3a97-458c-963d-dc418142bdde', 'Masjid D', -33.8688, 18.468197877031162),
-	(19, '2023-12-16 09:42:10.074932+00', '{"line1": "789 Elm St", "line2": "Unit 12", "pin": "67890"}', '555-123-4567', '07c384f1-cae3-4512-8c08-798650d9c073', 'Masjid C', 73.88576687440813, -0.1278),
-	(21, '2023-12-16 09:42:10.074932+00', '{"line1": "654 Birch St", "line2": "Suite 5", "pin": "01234"}', '111-222-3333', '2268fd32-0abc-4c21-9c80-dbb5623febfb', 'Noorani Masjid', 73.88576687440813, 18.468197877031162);
+INSERT INTO "public"."masjid" ("id", "created_at", "address", "mobile_no", "name", "longitude", "latitude") VALUES
+	(17, '2023-12-16 09:42:10.074932+00', '{"line1": "123 Main St", "line2": "Apt 4", "pin": "12345"}', '123-456-7890', 'Masjid A', 40.7128, -74.0060),
+	(18, '2023-12-16 09:42:10.074932+00', '{"line1": "456 Oak St", "line2": "Suite 7", "pin": "56789"}', '987-654-3210', 'Masjid B', 34.0522, -118.2437),
+	(20, '2023-12-16 09:42:10.074932+00', '{"line1": "987 Pine St", "line2": "Apt 23", "pin": "78901"}', '999-888-7777', 'Masjid D', -33.8688, 18.468197877031162),
+	(19, '2023-12-16 09:42:10.074932+00', '{"line1": "789 Elm St", "line2": "Unit 12", "pin": "67890"}', '555-123-4567', 'Masjid C', 73.88576687440813, -0.1278),
+	(21, '2023-12-16 09:42:10.074932+00', '{"line1": "654 Birch St", "line2": "Suite 5", "pin": "01234"}', '111-222-3333', 'Noorani Masjid', 73.88576687440813, 18.468197877031162);
 
 
 --
@@ -130,14 +130,6 @@ SELECT pg_catalog.setval('"public"."namaz_timing_id_seq"', 120, true);
 --
 
 SELECT pg_catalog.setval('"public"."stream_id_seq"', 1, false);
-
-
---
--- Name: user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('"public"."user_id_seq"', 1, false);
-
 
 --
 -- PostgreSQL database dump complete
