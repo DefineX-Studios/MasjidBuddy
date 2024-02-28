@@ -62,6 +62,9 @@ dependencies:
   expo-localization:
     specifier: ~14.3.0
     version: 14.3.0(expo@49.0.13)
+  expo-location:
+    specifier: ^16.5.3
+    version: 16.5.3(expo@49.0.13)
   expo-splash-screen:
     specifier: 0.20.5
     version: 0.20.5(expo-modules-autolinking@1.5.1)(expo@49.0.13)
@@ -80,6 +83,9 @@ dependencies:
   nativewind:
     specifier: ^2.0.10
     version: 2.0.11(react@18.2.0)(tailwindcss@3.2.7)
+  pnm:
+    specifier: ^0.0.0
+    version: 0.0.0
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -110,6 +116,9 @@ dependencies:
   react-native-get-location:
     specifier: ^4.0.1
     version: 4.0.1(react-native@0.72.6)
+  react-native-maps:
+    specifier: ^1.10.3
+    version: 1.10.3(react-native-web@0.19.7)(react-native@0.72.6)(react@18.2.0)
   react-native-mmkv:
     specifier: 2.6.3
     version: 2.6.3(react-native@0.72.6)(react@18.2.0)
@@ -3867,6 +3876,10 @@ packages:
       '@types/responselike': 1.0.0
     dev: true
 
+  /@types/geojson@7946.0.14:
+    resolution: {integrity: sha512-WCfD5Ht3ZesJUsONdhvm84dmzWOiOzOAqOncN0++w0lBw1o8OuDNJF2McvvCef/yBqb/HYRahp1BYtODFQ8bRg==}
+    dev: false
+
   /@types/graceful-fs@4.1.6:
     resolution: {integrity: sha512-Sig0SNORX9fdW+bQuTEovKj3uHcUL6LQKbCrrqb1X7J6/ReAbhCXRAhc+SMejhLELFj2QcyuxmUooZ4bt5ReSw==}
     dependencies:
@@ -6714,6 +6727,14 @@ packages:
     dependencies:
       expo: 49.0.13(@babel/core@7.21.0)
       rtl-detect: 1.0.4
+    dev: false
+
+  /expo-location@16.5.3(expo@49.0.13):
+    resolution: {integrity: sha512-V+84TZIa5MWpIXPvurnlJS9VxuxF1d3ajufUeq2sTgUkI/PP0aLHwyk5wg05C4CwuvwoiaVV80WyEL23j1Mz0w==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      expo: 49.0.13(@babel/core@7.21.0)
     dev: false
 
   /expo-manifests@0.7.1:
@@ -10786,6 +10807,10 @@ packages:
     engines: {node: '>=12.13.0'}
     dev: false
 
+  /pnm@0.0.0:
+    resolution: {integrity: sha512-bquR+GZwxi1iaPzKB/XESGoeA381BxCnsw3XgrfYqVeSbP25+VO19t0JeIRcW6LwjHZEw2LJ7IwqgMaiPDTCYQ==}
+    dev: false
+
   /postcss-calc@8.2.4(postcss@8.4.21):
     resolution: {integrity: sha512-SmWMSJmB8MRnnULldx0lQIyhSNvuDl9HfrZkaqqE/WHAhToYsAvDq+yAsA/kIyINDszOp3Rh0GFoNuH5Ypsm3Q==}
     peerDependencies:
@@ -11254,6 +11279,23 @@ packages:
       react-native: '>=0.42.0'
     dependencies:
       react-native: 0.72.6(@babel/core@7.21.0)(@babel/preset-env@7.22.10)(react@18.2.0)
+    dev: false
+
+  /react-native-maps@1.10.3(react-native-web@0.19.7)(react-native@0.72.6)(react@18.2.0):
+    resolution: {integrity: sha512-P8/Viq5vgW9FRhvfDFQHxq02cZUcDJu6VbBZar7c/voGDbD5nrTIA0qlpiUAmrs1ikd8+7S4QjXQlorppBBMvA==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      react: '>= 17.0.1'
+      react-native: '>= 0.64.3'
+      react-native-web: '>= 0.11'
+    peerDependenciesMeta:
+      react-native-web:
+        optional: true
+    dependencies:
+      '@types/geojson': 7946.0.14
+      react: 18.2.0
+      react-native: 0.72.6(@babel/core@7.21.0)(@babel/preset-env@7.22.10)(react@18.2.0)
+      react-native-web: 0.19.7(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
   /react-native-mmkv@2.6.3(react-native@0.72.6)(react@18.2.0):
