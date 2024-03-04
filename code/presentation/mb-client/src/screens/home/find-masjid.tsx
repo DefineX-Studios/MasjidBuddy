@@ -1,14 +1,11 @@
 import * as Location from 'expo-location';
 import React, { useState } from 'react';
-import { Dimensions, StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { enableLatestRenderer } from 'react-native-maps';
 
 import type { MasjidWithDistance } from '@/api/masjid/types';
 import { useMasjids } from '@/api/masjid/use-masjids';
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   container: {
@@ -17,28 +14,18 @@ const styles = StyleSheet.create({
   mapContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: windowHeight / 2,
+    height: '50%',
   },
   map: {
-    width: windowWidth,
-    ...StyleSheet.absoluteFillObject,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-  },
-  buttonText: {
-    fontWeight: 'bold',
+    width: '100%',
+    flex: 1,
   },
   input: {
-    flex: 1,
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 5,
     padding: 10,
-    marginRight: 10,
+    margin: 10,
   },
 });
 
@@ -57,65 +44,101 @@ const fetchUserLocation = async (setUserLocation: Function) => {
   }
 };
 
+const Map = ({
+  userLocation,
+  filteredMasjids,
+  handleMarkerPress,
+}: {
+  userLocation: { latitude: number; longitude: number } | null;
+  filteredMasjids: MasjidWithDistance[] | null;
+  handleMarkerPress: (masjid: MasjidWithDistance) => void;
+}) => (
+  <MapView
+    style={styles.map}
+    region={{
+      latitude: userLocation?.latitude || 0,
+      longitude: userLocation?.longitude || 0,
+      latitudeDelta: 0.015,
+      longitudeDelta: 0.0121,
+    }}
+  >
+    {filteredMasjids &&
+      filteredMasjids.map((marker: MasjidWithDistance) => (
+        <Marker
+          key={marker.masjid.id}
+          coordinate={{
+            latitude: marker.masjid.latitude,
+            longitude: marker.masjid.longitude,
+          }}
+          title={marker.masjid.name}
+          onPress={() => handleMarkerPress(marker)}
+        />
+      ))}
+    {userLocation && (
+      <Marker coordinate={userLocation} title="Your Location" pinColor="blue" />
+    )}
+  </MapView>
+);
+
+const SearchInput = ({
+  setSearchQuery,
+  searchQuery,
+}: {
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  searchQuery: string;
+}) => (
+  <TextInput
+    style={styles.input}
+    placeholder={'Search'}
+    placeholderTextColor={'#666'}
+    onChangeText={setSearchQuery} // Update search query state
+    value={searchQuery} // Bind search query state to the input value
+  />
+);
+
 const FindMasjid = () => {
   const result = useMasjids();
   const { data: masjidsWithDistance } = result;
-  const [userLocation, setUserLocation] = useState<null | {
+  const [userLocation, setUserLocation] = useState<{
     latitude: number;
     longitude: number;
-  }>(null);
-  console.log(JSON.stringify(userLocation));
+  } | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [_matchedMasjid, setMatchedMasjid] =
+    useState<MasjidWithDistance | null>(null);
+
   if (!userLocation) {
     fetchUserLocation(setUserLocation);
   }
 
+  const handleMarkerPress = (masjid: MasjidWithDistance) => {
+    // Set the matched masjid to navigate the user to its location
+    setUserLocation({
+      latitude: masjid.masjid.latitude,
+      longitude: masjid.masjid.longitude,
+    });
+    setMatchedMasjid(masjid);
+  };
+
+  // Filter masjids based on search query
+  const filteredMasjids =
+    masjidsWithDistance?.filter((marker: MasjidWithDistance) =>
+      marker.masjid.name.toLowerCase().includes(searchQuery.toLowerCase())
+    ) ?? [];
+
   return (
     <View style={styles.container}>
       <View style={styles.mapContainer}>
-        <MapView
-          style={styles.map}
-          region={{
-            latitude: userLocation?.latitude || 0,
-            longitude: userLocation?.longitude || 0,
-            latitudeDelta: 0.015,
-            longitudeDelta: 0.0121,
-          }}
-        >
-          {masjidsWithDistance &&
-            masjidsWithDistance.map((marker: MasjidWithDistance) => (
-              <Marker
-                key={marker.masjid.id}
-                coordinate={{
-                  latitude: marker.masjid.latitude,
-                  longitude: marker.masjid.longitude,
-                }}
-                title={marker.masjid.name}
-              />
-            ))}
-          {userLocation && (
-            <Marker
-              coordinate={userLocation}
-              title="Your Location"
-              pinColor="blue"
-            />
-          )}
-        </MapView>
+        <Map
+          userLocation={userLocation}
+          filteredMasjids={filteredMasjids}
+          handleMarkerPress={handleMarkerPress}
+        />
       </View>
       <View style={{ position: 'absolute', top: 10, width: '100%' }}>
-        <TextInput
-          style={{
-            borderRadius: 10,
-            margin: 10,
-            color: '#000',
-            borderColor: '#666',
-            backgroundColor: '#FFF',
-            borderWidth: 1,
-            height: 45,
-            paddingHorizontal: 10,
-            fontSize: 18,
-          }}
-          placeholder={'Search'}
-          placeholderTextColor={'#666'}
+        <SearchInput
+          setSearchQuery={setSearchQuery}
+          searchQuery={searchQuery}
         />
       </View>
     </View>
