@@ -13,6 +13,8 @@ yarn-error.log
 /coverage
 # macOS
 .DS_Store
+android/
+ios/
 
 # change to .env* when we start using staging/prod
 .env.development
