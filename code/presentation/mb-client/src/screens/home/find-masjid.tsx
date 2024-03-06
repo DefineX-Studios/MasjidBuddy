@@ -1,11 +1,13 @@
+import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { Button, StyleSheet, TextInput, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { enableLatestRenderer } from 'react-native-maps';
 
 import type { MasjidWithDistance } from '@/api/masjid/types';
 import { useMasjids } from '@/api/masjid/use-masjids';
+// Adjust the path as needed
 
 const styles = StyleSheet.create({
   container: {
@@ -26,6 +28,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     margin: 10,
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    marginTop: 10, // Adjust margin as needed
   },
 });
 
@@ -97,6 +103,7 @@ const SearchInput = ({
 );
 
 const FindMasjid = () => {
+  const navigation = useNavigation();
   const result = useMasjids();
   const { data: masjidsWithDistance } = result;
   const [userLocation, setUserLocation] = useState<{
@@ -135,10 +142,27 @@ const FindMasjid = () => {
           handleMarkerPress={handleMarkerPress}
         />
       </View>
-      <View style={{ position: 'absolute', top: 10, width: '100%' }}>
+      <View
+        style={{
+          position: 'absolute',
+          top: 10,
+          width: '100%',
+          backgroundColor: 'white',
+        }}
+      >
         <SearchInput
           setSearchQuery={setSearchQuery}
           searchQuery={searchQuery}
+        />
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Open"
+          onPress={() => {
+            // Navigate to MasjidScreen with filtered masjids
+            navigation.navigate('MasjidScreen');
+          }}
         />
       </View>
     </View>
