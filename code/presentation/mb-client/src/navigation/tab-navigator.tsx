@@ -7,7 +7,6 @@ import type { SvgProps } from 'react-native-svg';
 
 import { entries } from '@/core';
 import { Settings, Style } from '@/screens';
-import FindMasjid from '@/screens/home/find-masjid';
 import {
   colors,
   Feed as FeedIcon,
@@ -17,10 +16,11 @@ import {
 } from '@/ui';
 
 import { FeedNavigator } from './feed-navigator';
+import { HomeNavigator } from './home-navigator';
 
 const TabsInfo = {
-  Home: {
-    component: FindMasjid,
+  HomeNavigator: {
+    component: HomeNavigator,
     label: 'Home',
     icon: (props: SvgProps) => <Home {...props} />,
   },

@@ -1,5 +1,3 @@
-import type { RouteProp } from '@react-navigation/native';
-import { useRoute } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import React, { useState } from 'react';
 
@@ -8,8 +6,6 @@ import { useMasjids } from '@/api/masjid/use-masjids';
 import { Text, View } from '@/ui';
 
 const MasjidScreen = () => {
-  const { params } = useRoute<RouteProp<'MasjidScreen'>>();
-
   const { data: masjidsWithDistance, isLoading, error } = useMasjids();
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
