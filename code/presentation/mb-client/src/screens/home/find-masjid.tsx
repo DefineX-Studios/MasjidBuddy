@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import MapView, { enableLatestRenderer, Marker } from 'react-native-maps';
+import MapView, { Details, enableLatestRenderer, Marker, Region } from 'react-native-maps';
 
 import type { MasjidWithDistance, NamazTimings } from '@/api/masjid/types'; // Importing Masjid type
 import { useMasjids } from '@/api/masjid/use-masjids';
@@ -74,6 +74,10 @@ const fetchUserLocation = async (setUserLocation: Function) => {
   }
 };
 
+const onRegionChange = (region: Region, details: Details) => {
+  console.log(`region changed: ${JSON.stringify(region)} | ${JSON.stringify(details)}`);
+}
+
 const FindMasjid = (props: {
   navigation: {
     navigate: (arg0: string, arg1: { selectedMasjidId: number | null }) => void;
@@ -82,6 +86,8 @@ const FindMasjid = (props: {
   // eslint-disable-next-line unused-imports/no-unused-vars
   const navigation = useNavigation();
   const result = useMasjids();
+  const mapRef = React.createRef<MapView>();
+
   const { data: masjidsWithDistance } = result;
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
@@ -116,6 +122,8 @@ const FindMasjid = (props: {
     <View style={styles.container}>
       <View style={styles.mapContainer}>
         <MapView
+          ref={mapRef}
+          onRegionChange={onRegionChange}
           style={styles.map}
           region={{
             latitude: userLocation?.latitude || 0,
