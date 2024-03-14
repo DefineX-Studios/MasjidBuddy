@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-/* eslint-disable unused-imports/no-unused-vars */
+
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import React, { useState } from 'react';
@@ -74,7 +74,12 @@ const fetchUserLocation = async (setUserLocation: Function) => {
   }
 };
 
-const FindMasjid = () => {
+const FindMasjid = (props: {
+  navigation: {
+    navigate: (arg0: string, arg1: { selectedMasjidId: number | null }) => void;
+  };
+}) => {
+  // eslint-disable-next-line unused-imports/no-unused-vars
   const navigation = useNavigation();
   const result = useMasjids();
   const { data: masjidsWithDistance } = result;
@@ -177,6 +182,9 @@ const FindMasjid = () => {
         <Button
           title="Open"
           onPress={() => {
+            props.navigation.navigate('MasjidScreen', {
+              selectedMasjidId,
+            });
             // Navigate to MasjidScreen with filtered masjids
           }}
         />

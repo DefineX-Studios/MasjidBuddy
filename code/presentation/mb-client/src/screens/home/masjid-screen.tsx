@@ -1,75 +1,91 @@
-import * as Location from 'expo-location';
-import React, { useState } from 'react';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-import type { MasjidWithDistance, NamazTimings } from '@/api/masjid/types';
-import { useMasjids } from '@/api/masjid/use-masjids';
-import { Text, View } from '@/ui';
+import { useMasjids } from '@/api/masjid/use-masjids'; // Import the useMasjids hook
+import { getNextNamaz } from '@/api/masjid/util'; // Import the getNextNamaz function
 
-const MasjidScreen = () => {
-  const { data: masjidsWithDistance, isLoading, error } = useMasjids();
-  const [userLocation, setUserLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#333', // Dark grey background color
+  },
+  text: {
+    color: 'green', // Green font color
+    marginBottom: 10,
+    fontSize: 18, // Increased font size
+    fontWeight: 'bold', // Bold text
+    borderWidth: 1, // Border width
+    borderColor: 'green', // Border color
+    padding: 10, // Padding around the text
+    borderRadius: 5, // Border radius for box shape
+  },
+});
 
-  const fetchUserLocation = async () => {
-    try {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        throw new Error('Permission to access location was denied');
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setUserLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
-    } catch (error) {
-      console.error('Error getting user location:', error);
-    }
+const MasjidScreen = (props: {
+  route: {
+    params: {
+      selectedMasjidId:
+        | string
+        | number
+        | boolean
+        | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+        | Iterable<React.ReactNode>
+        | React.ReactPortal
+        | null
+        | undefined;
+    };
   };
-
-  if (!userLocation) {
-    fetchUserLocation();
-  }
-
-  const calculateDistance = (userLocation: any, masjid: MasjidWithDistance) => {
-    // Implement distance calculation logic here
-    return masjid.distance; // Placeholder value, replace with actual calculation
-  };
-
-  const renderNamazTimings = (namazTimings: NamazTimings) => {
-    return (
-      <View>
-        <Text>Fajr: {namazTimings.fajar}</Text>
-        <Text>Zohar: {namazTimings.zohar}</Text>
-        <Text>Jummah: {namazTimings.jummah}</Text>
-        <Text>Asr: {namazTimings.asr}</Text>
-        <Text>Maghrib: {namazTimings.magrib}</Text>
-        <Text>Isha: {namazTimings.isha}</Text>
-      </View>
-    );
-  };
+}) => {
+  const { data: masjidsWithDistance, isLoading, isError } = useMasjids(); // Call the useMasjids hook
+  const selectedMasjidId = props.route.params.selectedMasjidId;
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
   }
 
-  if (error) {
-    return <Text>Error:</Text>;
+  if (isError || !masjidsWithDistance) {
+    return (
+      <View>
+        <Text>Error occurred while fetching masjid data.</Text>
+      </View>
+    );
   }
+
+  const selectedMasjid = masjidsWithDistance.find(
+    (masjid) => masjid.masjid.id === selectedMasjidId
+  );
+
+  if (!selectedMasjid) {
+    return (
+      <View>
+        <Text>Selected masjid not found.</Text>
+      </View>
+    );
+  }
+
+  // Calculate and set the next namaz time
+  const nextNamaz = getNextNamaz(
+    new Date().toLocaleTimeString(),
+    selectedMasjid.masjid.namaz_timings
+  );
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {masjidsWithDistance &&
-        masjidsWithDistance.map((masjid) => (
-          <View key={masjid.masjid.id} style={{ marginBottom: 20 }}>
-            <Text variant="h2">{masjid.masjid.name}</Text>
-            <Text>Distance: {calculateDistance(userLocation, masjid)} km</Text>
-            {masjid.masjid.namaz_timings &&
-              renderNamazTimings(masjid.masjid.namaz_timings)}
-          </View>
-        ))}
+    <View style={styles.container}>
+      <Text style={styles.text}>Masjid Name: {selectedMasjid.masjid.name}</Text>
+      <Text style={styles.text}>
+        Masjid Address: {selectedMasjid.masjid.address.line1}
+      </Text>
+      <Text style={styles.text}>
+        Masjid Distance: {selectedMasjid.distance.toFixed(2)} km
+      </Text>
+      <Text style={styles.text}>Next Namaz: {nextNamaz.time}</Text>
+      {/* Display other masjid details as needed */}
     </View>
   );
 };
