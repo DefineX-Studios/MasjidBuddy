@@ -1,5 +1,6 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 import { useMasjids } from '@/api/masjid/use-masjids'; // Import the useMasjids hook
 import { getNextNamaz } from '@/api/masjid/util'; // Import the getNextNamaz function
@@ -23,6 +24,7 @@ const styles = StyleSheet.create({
   },
 });
 
+// eslint-disable-next-line max-lines-per-function
 const MasjidScreen = (props: {
   route: {
     params: {
@@ -40,6 +42,7 @@ const MasjidScreen = (props: {
 }) => {
   const { data: masjidsWithDistance, isLoading, isError } = useMasjids(); // Call the useMasjids hook
   const selectedMasjidId = props.route.params.selectedMasjidId;
+  const navigation = useNavigation();
 
   if (isLoading) {
     return (
@@ -86,6 +89,13 @@ const MasjidScreen = (props: {
       </Text>
       <Text style={styles.text}>Next Namaz: {nextNamaz.time}</Text>
       {/* Display other masjid details as needed */}
+      <Button
+        title="Namaz Timings"
+        onPress={() => {
+          navigation.navigate('NamazTimingsScreen', { selectedMasjidId });
+          // Navigate to MasjidScreen with filtered masjids
+        }}
+      />
     </View>
   );
 };
