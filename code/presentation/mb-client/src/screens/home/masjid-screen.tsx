@@ -1,9 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
+import type { RouteProp } from '@/navigation/types';
 
 import { useMasjids } from '@/api/masjid/use-masjids'; // Import the useMasjids hook
 import { getNextNamaz } from '@/api/masjid/util'; // Import the getNextNamaz function
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,24 +26,13 @@ const styles = StyleSheet.create({
 });
 
 // eslint-disable-next-line max-lines-per-function
-const MasjidScreen = (props: {
-  route: {
-    params: {
-      selectedMasjidId:
-        | string
-        | number
-        | boolean
-        | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-        | Iterable<React.ReactNode>
-        | React.ReactPortal
-        | null
-        | undefined;
-    };
-  };
-}) => {
+const MasjidScreen = () => {
   const { data: masjidsWithDistance, isLoading, isError } = useMasjids(); // Call the useMasjids hook
-  const selectedMasjidId = props.route.params.selectedMasjidId;
+  const {params} = useRoute<RouteProp<'MasjidScreen'>>();
+  const selectedMasjidId = params.selectedMasjidId;
+
   const navigation = useNavigation();
+
 
   if (isLoading) {
     return (

@@ -8,9 +8,9 @@ import NamazTimingsScreen from '@/screens/home/namaz-timings';
 export type HomeStackParamList = {
   HomeScreen: undefined;
   FindMasjid: undefined;
-  MasjidScreen: undefined;
+  MasjidScreen: {selectedMasjidId :number};
   TestScreen: undefined;
-  NamazTimingScreen: undefined;
+  NamazTimingsScreen: {selectedMasjidId :number};
 };
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
@@ -21,7 +21,7 @@ export const HomeNavigator = () => {
       <Stack.Group>
         <Stack.Screen name="FindMasjid" component={FindMasjid} />
         <Stack.Screen name="MasjidScreen" component={MasjidScreen} />
-        <Stack.Screen name="NamazTimingScreen" component={NamazTimingsScreen} />
+        <Stack.Screen name="NamazTimingsScreen" component={NamazTimingsScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );

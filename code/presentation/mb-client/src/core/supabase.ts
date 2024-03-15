@@ -6,7 +6,8 @@ import { createClient } from '@supabase/supabase-js';
 import type { AuthMethods, TokenType } from './auth/utils';
 
 // Create a single supabase client for interacting with your database
-const supabase = createClient(Env.SUPABASE_URL, Env.SUPABASE_KEY);
+// todo mohsin dont export supabase instead define all the functions u need which uses supabase here and then export those functions
+export const supabase = createClient(Env.SUPABASE_URL, Env.SUPABASE_KEY);
 
 export const login = async (
   idToken: string,

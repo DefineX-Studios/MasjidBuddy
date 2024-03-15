@@ -1,31 +1,11 @@
-/* eslint-disable max-lines-per-function */
-import type { RouteProp } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
-import type { StackNavigationProp } from '@react-navigation/stack';
-import { createClient } from '@supabase/supabase-js';
-import { Env } from 'env';
+import type { RouteProp } from '@/navigation/types';
+
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import type { MasjidWithDistance } from '@/api/masjid';
-
-type NamazTimingsScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'NamazTimingsScreen'>;
-};
-
-// Define the type for the navigation stack
-type RootStackParamList = {
-  NamazTimingsScreen: { selectedMasjidId: string }; // Define the screen name and the parameter type
-  // Add other screens if needed
-};
-
-// Define the type for the route props
-type NamazTimingsScreenRouteProp = RouteProp<
-  RootStackParamList,
-  'NamazTimingsScreen'
->;
-
-const supabase = createClient(Env.SUPABASE_URL, Env.SUPABASE_KEY);
+import { supabase } from '@/core/supabase';
 
 const styles = StyleSheet.create({
   container: {
@@ -42,19 +22,17 @@ const styles = StyleSheet.create({
   },
 });
 
-const NamazTimingsScreen: React.FC<NamazTimingsScreenProps> = ({
-  // eslint-disable-next-line unused-imports/no-unused-vars
-  navigation,
-}) => {
+const NamazTimingsScreen = () => {
   const [masjidsWithDistance, setMasjidsWithDistance] = useState<
     MasjidWithDistance[]
   >([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const route = useRoute<NamazTimingsScreenRouteProp>();
+  const {params} = useRoute<RouteProp<'NamazTimingsScreen'>>();
+  const selectedMasjidId = params.selectedMasjidId;
 
-  const { selectedMasjidId } = route.params; // Get selected masjid ID from route params
+  console.log(`id: ${selectedMasjidId}`);
 
   useEffect(() => {
     const fetchMasjids = async () => {
