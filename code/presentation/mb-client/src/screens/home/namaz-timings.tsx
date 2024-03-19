@@ -1,11 +1,10 @@
+/* eslint-disable max-lines-per-function */
 import { useRoute } from '@react-navigation/native';
-import type { RouteProp } from '@/navigation/types';
-
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import type { MasjidWithDistance } from '@/api/masjid';
 import { supabase } from '@/core/supabase';
+import type { RouteProp } from '@/navigation/types';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,51 +19,44 @@ const styles = StyleSheet.create({
     fontSize: 18, // Increased font size
     fontWeight: 'bold', // Bold text
   },
+  timingsContainer: {
+    backgroundColor: '#FFF', // White background color for the container
+    padding: 10, // Padding around the timings
+    borderRadius: 5, // Rounded corners
+  },
+  timingsText: {
+    marginBottom: 5, // Spacing between timings
+  },
 });
 
 const NamazTimingsScreen = () => {
-  const [masjidsWithDistance, setMasjidsWithDistance] = useState<
-    MasjidWithDistance[]
-  >([]);
+  const [namazTimings, setNamazTimings] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const {params} = useRoute<RouteProp<'NamazTimingsScreen'>>();
+  const { params } = useRoute<RouteProp<'NamazTimingsScreen'>>();
   const selectedMasjidId = params.selectedMasjidId;
 
-  console.log(`id: ${selectedMasjidId}`);
-
   useEffect(() => {
-    const fetchMasjids = async () => {
+    const fetchNamazTimings = async () => {
       try {
         setIsLoading(true);
         setError(null);
-        // Query the masjids data from Supabase
-        const { data: masjidsData, error: masjidsError } = await supabase
-          .from('masjids')
-          .select('*');
-        if (masjidsError) {
-          throw new Error('Error fetching masjids');
-        }
-        // Query the namaz timings data from Supabase
+
+        // Query the namaz timings data from Supabase based on the selectedMasjidId
         const { data: namazTimingsData, error: timingsError } = await supabase
-          .from('namaz_timings')
-          .select('*');
+          .from('namaz_timing')
+          .select('*')
+          .eq('masjid_id', selectedMasjidId);
+
         if (timingsError) {
           throw new Error('Error fetching namaz timings');
         }
-        // Map the fetched masjid data to match the MasjidWithDistance type
-        const masjidsWithDistance = masjidsData.map((masjid) => {
-          const namazTimings = namazTimingsData.find(
-            (timing) => timing.masjid_id === masjid.id
-          );
-          return {
-            masjid,
-            distance: 0, // You need to calculate distance based on user location
-            namazTimings,
-          };
-        });
-        setMasjidsWithDistance(masjidsWithDistance);
+
+        // Assuming namazTimingsData contains only one entry for the selected masjid
+
+        // Set the fetched namaz timings
+        setNamazTimings(namazTimingsData);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -72,8 +64,8 @@ const NamazTimingsScreen = () => {
       }
     };
 
-    fetchMasjids();
-  }, []);
+    fetchNamazTimings();
+  }, [selectedMasjidId]); // Run this effect whenever selectedMasjidId changes
 
   if (isLoading) {
     return (
@@ -90,37 +82,54 @@ const NamazTimingsScreen = () => {
       </View>
     );
   }
-
-  // Find the selected masjid by ID
-  const selectedMasjid = masjidsWithDistance.find(
-    (masjid) => masjid.masjid.id === selectedMasjidId
+  console.log(namazTimings);
+  const fajrTiming = namazTimings.find(
+    (timing: { namaz: string }) => timing.namaz === 'fajar'
   );
 
+  // Find Dhuhr timing
+  const dhuhrTiming = namazTimings.find(
+    (timing: { namaz: string }) => timing.namaz === 'zohar'
+  );
+
+  // Find Asr timing
+  const asrTiming = namazTimings.find(
+    (timing: { namaz: string }) => timing.namaz === 'asr'
+  );
+
+  // Find Maghrib timing
+  const maghribTiming = namazTimings.find(
+    (timing: { namaz: string }) => timing.namaz === 'magrib'
+  );
+
+  // Find Isha timing
+  const ishaTiming = namazTimings.find(
+    (timing: { namaz: string }) => timing.namaz === 'isha'
+  );
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
-        Namaz Timings for Masjid: {selectedMasjid?.masjid.name}
+        Namaz Timings for Masjid:{' '}
+        {namazTimings.length > 0 ? namazTimings[0].masjid_id : 'Unknown'}
       </Text>
       {/* Display the namaz timings for the selected masjid */}
-      {selectedMasjid?.masjid.namaz_timings && (
-        <View>
-          <Text style={styles.text}>
-            Fajr: {selectedMasjid.masjid.namaz_timings.fajar}
-          </Text>
-          <Text style={styles.text}>
-            Dhuhr: {selectedMasjid.masjid.namaz_timings.zohar}
-          </Text>
-          <Text style={styles.text}>
-            Asr: {selectedMasjid.masjid.namaz_timings.asr}
-          </Text>
-          <Text style={styles.text}>
-            Maghrib: {selectedMasjid.masjid.namaz_timings.magrib}
-          </Text>
-          <Text style={styles.text}>
-            Isha: {selectedMasjid.masjid.namaz_timings.isha}
-          </Text>
-        </View>
-      )}
+      <View style={styles.timingsContainer}>
+        <Text style={styles.timingsText}>
+          Fajr: {fajrTiming ? fajrTiming.time : 'Unknown'}
+        </Text>
+        <Text style={styles.timingsText}>
+          Dhuhr: {dhuhrTiming ? dhuhrTiming.time : 'Unknown'}
+        </Text>
+        <Text style={styles.timingsText}>
+          Asr: {asrTiming ? asrTiming.time : 'Unknown'}
+        </Text>
+        <Text style={styles.timingsText}>
+          Maghrib: {maghribTiming ? maghribTiming.time : 'Unknown'}
+        </Text>
+        <Text style={styles.timingsText}>
+          Isha: {ishaTiming ? ishaTiming.time : 'Unknown'}
+        </Text>
+      </View>
     </View>
   );
 };
