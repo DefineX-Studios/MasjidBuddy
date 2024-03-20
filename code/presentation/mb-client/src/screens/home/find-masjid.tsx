@@ -1,14 +1,21 @@
-/* eslint-disable max-lines-per-function */
-
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import React, { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import MapView, { Details, enableLatestRenderer, Marker, Region } from 'react-native-maps';
+import {
+  Button,
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import type { Details, Region } from 'react-native-maps';
+import MapView, { enableLatestRenderer, Marker } from 'react-native-maps';
 
-import type { MasjidWithDistance, NamazTimings } from '@/api/masjid/types'; // Importing Masjid type
+import type { MasjidWithDistance, NamazTimings } from '@/api/masjid/types';
 import { useMasjids } from '@/api/masjid/use-masjids';
-import { getNextNamaz } from '@/api/masjid/util'; // Importing getNextNamaz function and NamazTimings type
+import { getNextNamaz } from '@/api/masjid/util';
 
 const styles = StyleSheet.create({
   container: {
@@ -57,6 +64,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666', // Medium gray font color
   },
+  listItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  listItemText: {
+    fontSize: 16,
+  },
 });
 
 const fetchUserLocation = async (setUserLocation: Function) => {
@@ -75,9 +90,12 @@ const fetchUserLocation = async (setUserLocation: Function) => {
 };
 
 const onRegionChange = (region: Region, details: Details) => {
-  console.log(`region changed: ${JSON.stringify(region)} | ${JSON.stringify(details)}`);
-}
+  console.log(
+    `region changed: ${JSON.stringify(region)} | ${JSON.stringify(details)}`
+  );
+};
 
+// eslint-disable-next-line max-lines-per-function
 const FindMasjid = (props: {
   navigation: {
     navigate: (arg0: string, arg1: { selectedMasjidId: number | null }) => void;
@@ -180,10 +198,21 @@ const FindMasjid = (props: {
       <View style={{ marginTop: 10 }}>
         <TextInput
           style={styles.input}
-          placeholder={'Search'}
-          placeholderTextColor={'#666'}
-          onChangeText={setSearchQuery}
+          placeholder="Search"
+          onChangeText={(text) => setSearchQuery(text)}
           value={searchQuery}
+        />
+        <FlatList
+          data={filteredMasjids}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.listItem}
+              onPress={() => handleMarkerPress(item)}
+            >
+              <Text style={styles.listItemText}>{item.masjid.name}</Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item.masjid.id.toString()}
         />
       </View>
       <View style={styles.buttonContainer}>
