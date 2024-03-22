@@ -25,14 +25,11 @@ const styles = StyleSheet.create({
   },
 });
 
-// eslint-disable-next-line max-lines-per-function
 const MasjidScreen = () => {
   const { data: masjidsWithDistance, isLoading, isError } = useMasjids(); // Call the useMasjids hook
-  const {params} = useRoute<RouteProp<'MasjidScreen'>>();
+  const { params } = useRoute<RouteProp<'MasjidScreen'>>();
   const selectedMasjidId = params.selectedMasjidId;
-
   const navigation = useNavigation();
-
 
   if (isLoading) {
     return (
@@ -84,6 +81,24 @@ const MasjidScreen = () => {
         onPress={() => {
           navigation.navigate('NamazTimingsScreen', { selectedMasjidId });
           // Navigate to MasjidScreen with filtered masjids
+        }}
+      />
+      <Button
+        title="Audio Live"
+        onPress={() => {
+          navigation.navigate('AudioScreen');
+        }}
+      />
+      <Button
+        title="Video Offline"
+        onPress={() => {
+          navigation.navigate('VideoScreen');
+        }}
+      />
+      <Button
+        title="Masjid Info"
+        onPress={() => {
+          navigation.navigate('MasjidInfo', { selectedMasjidId });
         }}
       />
     </View>
