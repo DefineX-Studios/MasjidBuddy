@@ -1,5 +1,6 @@
+/* eslint-disable max-lines-per-function */
 import { useRoute } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { supabase } from '@/core/supabase';
@@ -28,36 +29,39 @@ const MasjidInfo = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchMasjidDetails = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
+  useEffect(() => {
+    const fetchMasjidDetails = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
 
-      // Query the masjid details data from Supabase based on the selectedMasjidId
-      const { data: masjidDetails, error: masjidError } = await supabase
-        .from('masjids')
-        .select('*')
-        .eq('id', selectedMasjidId);
+        // Query the masjid details data from Supabase based on the selectedMasjidId
+        const { data: masjidDetails, error: masjidError } = await supabase
+          .from('masjid')
+          .select('*')
+          .eq('id', selectedMasjidId);
 
-      if (masjidError) {
-        throw new Error('Error fetching masjid details');
+        if (masjidError) {
+          throw new Error('Error fetching masjid details');
+        }
+
+        if (!masjidDetails || masjidDetails.length === 0) {
+          throw new Error('Masjid details not found');
+        }
+
+        // Set the fetched masjid details
+        setMasjidInfo(masjidDetails[0]); // Wrap in array if needed
+      } catch (error) {
+        setError('Error');
+      } finally {
+        setIsLoading(false);
       }
+    };
 
-      if (!masjidDetails || masjidDetails.length === 0) {
-        throw new Error('Masjid details not found');
-      }
-
-      // Set the fetched masjid details
-      setMasjidInfo(masjidDetails[0]);
-    } catch (error) {
-      setError('Error');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    fetchMasjidDetails();
+  }, [selectedMasjidId]);
 
   if (isLoading) {
-    fetchMasjidDetails();
     return (
       <View style={styles.container}>
         <Text style={styles.text}>Loading...</Text>
@@ -84,7 +88,10 @@ const MasjidInfo = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Name: {masjidInfo.name}</Text>
-      <Text style={styles.text}>Address: {masjidInfo.address}</Text>
+      <Text style={styles.text}>
+        Address: {masjidInfo.address.line1}, {masjidInfo.address.line2},{' '}
+        {masjidInfo.address.pin}
+      </Text>
       <Text style={styles.text}>Mobile: {masjidInfo.mobile}</Text>
     </View>
   );

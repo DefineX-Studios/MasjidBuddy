@@ -1,10 +1,11 @@
+/* eslint-disable max-lines-per-function */
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import type { RouteProp } from '@/navigation/types';
 
 import { useMasjids } from '@/api/masjid/use-masjids'; // Import the useMasjids hook
 import { getNextNamaz } from '@/api/masjid/util'; // Import the getNextNamaz function
-import { useRoute, useNavigation } from '@react-navigation/native';
+import type { RouteProp } from '@/navigation/types';
 
 const styles = StyleSheet.create({
   container: {

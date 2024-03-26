@@ -202,6 +202,7 @@ const FindMasjid = (props: {
           onChangeText={(text) => setSearchQuery(text)}
           value={searchQuery}
         />
+
         <FlatList
           data={filteredMasjids}
           renderItem={({ item }) => (
