@@ -3,31 +3,31 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
-import { useMasjids } from '@/api/masjid/use-masjids'; // Import the useMasjids hook
-import { getNextNamaz } from '@/api/masjid/util'; // Import the getNextNamaz function
+import { useMasjids } from '@/api/masjid/use-masjids';
+import { getNextNamaz } from '@/api/masjid/util';
+import { masjid } from '@/core/supabase';
 import type { RouteProp } from '@/navigation/types';
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#333', // Dark grey background color
+    backgroundColor: '#333',
   },
   text: {
-    color: 'green', // Green font color
+    color: 'green',
     marginBottom: 10,
-    fontSize: 18, // Increased font size
-    fontWeight: 'bold', // Bold text
-    borderWidth: 1, // Border width
-    borderColor: 'green', // Border color
-    padding: 10, // Padding around the text
-    borderRadius: 5, // Border radius for box shape
+    fontSize: 18,
+    fontWeight: 'bold',
+    borderWidth: 1,
+    borderColor: 'green',
+    padding: 10,
+    borderRadius: 5,
   },
 });
 
 const MasjidScreen = () => {
-  const { data: masjidsWithDistance, isLoading, isError } = useMasjids(); // Call the useMasjids hook
+  const { data: masjidsWithDistance, isLoading, isError } = useMasjids();
   const { params } = useRoute<RouteProp<'MasjidScreen'>>();
   const selectedMasjidId = params.selectedMasjidId;
   const navigation = useNavigation();
@@ -60,11 +60,15 @@ const MasjidScreen = () => {
     );
   }
 
-  // Calculate and set the next namaz time
   const nextNamaz = getNextNamaz(
     new Date().toLocaleTimeString(),
     selectedMasjid.masjid.namaz_timings
   );
+
+  // Navigation function for subscribing
+  const handleSubscribe = () => {
+    masjid.subscribe(selectedMasjidId);
+  };
 
   return (
     <View style={styles.container}>
@@ -76,12 +80,15 @@ const MasjidScreen = () => {
         Masjid Distance: {selectedMasjid.distance.toFixed(2)} km
       </Text>
       <Text style={styles.text}>Next Namaz: {nextNamaz.time}</Text>
-      {/* Display other masjid details as needed */}
+
+      {/* Button to subscribe */}
+      <Button title="Subscribe" onPress={handleSubscribe} />
+
+      {/* Other navigation buttons */}
       <Button
         title="Namaz Timings"
         onPress={() => {
           navigation.navigate('NamazTimingsScreen', { selectedMasjidId });
-          // Navigate to MasjidScreen with filtered masjids
         }}
       />
       <Button
