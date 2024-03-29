@@ -21,13 +21,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  mapContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '50%',
-  },
   map: {
-    width: '100%',
+    flex: 1,
+  },
+  mapContainer: {
     flex: 1,
   },
   input: {
@@ -42,7 +39,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   masjidDetailsContainer: {
-    backgroundColor: '#f0f0f0', // Light gray background color
+    backgroundColor: '#f0f0f0',
     padding: 10,
     marginTop: 10,
     borderRadius: 5,
@@ -53,16 +50,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#333', // Dark gray font color
+    color: '#333',
   },
   masjidDistance: {
     fontSize: 16,
     marginBottom: 5,
-    color: '#555', // Slightly darker gray font color
+    color: '#555',
   },
   masjidAddress: {
     fontSize: 16,
-    color: '#666', // Medium gray font color
+    color: '#666',
   },
   listItem: {
     padding: 10,
@@ -101,8 +98,7 @@ const FindMasjid = (props: {
     navigate: (arg0: string, arg1: { selectedMasjidId: number | null }) => void;
   };
 }) => {
-  // eslint-disable-next-line unused-imports/no-unused-vars
-  const navigation = useNavigation();
+  const _navigation = useNavigation();
   const result = useMasjids();
   const mapRef = React.createRef<MapView>();
 
@@ -138,63 +134,6 @@ const FindMasjid = (props: {
 
   return (
     <View style={styles.container}>
-      <View style={styles.mapContainer}>
-        <MapView
-          ref={mapRef}
-          onRegionChange={onRegionChange}
-          style={styles.map}
-          region={{
-            latitude: userLocation?.latitude || 0,
-            longitude: userLocation?.longitude || 0,
-            latitudeDelta: 0.015,
-            longitudeDelta: 0.0121,
-          }}
-        >
-          {filteredMasjids &&
-            filteredMasjids.map((marker: MasjidWithDistance) => (
-              <Marker
-                key={marker.masjid.id}
-                coordinate={{
-                  latitude: marker.masjid.latitude,
-                  longitude: marker.masjid.longitude,
-                }}
-                title={marker.masjid.name}
-                onPress={() => handleMarkerPress(marker)}
-              />
-            ))}
-          {userLocation && (
-            <Marker
-              coordinate={userLocation}
-              title="Your Location"
-              pinColor="blue"
-            />
-          )}
-        </MapView>
-      </View>
-      <View style={styles.masjidDetailsContainer}>
-        {selectedMasjidDetails && (
-          <View>
-            <Text style={styles.masjidName}>
-              Masjid Name: {selectedMasjidDetails.masjid.name}
-            </Text>
-            <Text style={styles.masjidDistance}>
-              Distance: {selectedMasjidDetails.distance} km
-            </Text>
-            {/* Displaying the address below the masjid name */}
-            <Text style={styles.masjidAddress}>
-              Address: {selectedMasjidDetails.masjid.address.line1}
-            </Text>
-            {/* Displaying the next Namaz time below the address */}
-            <Text style={styles.masjidAddress}>
-              Next-Namaz:{' '}
-              {
-                getNextNamaz(new Date().toLocaleTimeString(), namazTimings)
-                  .namaz
-              }
-            </Text>
-          </View>
-        )}
-      </View>
       <View style={{ marginTop: 10 }}>
         <TextInput
           style={styles.input}
@@ -204,7 +143,7 @@ const FindMasjid = (props: {
         />
 
         <FlatList
-          data={filteredMasjids}
+          data={searchQuery ? filteredMasjids : []}
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.listItem}
@@ -216,6 +155,66 @@ const FindMasjid = (props: {
           keyExtractor={(item) => item.masjid.id.toString()}
         />
       </View>
+
+      {userLocation && (
+        <View style={styles.mapContainer}>
+          <MapView
+            ref={mapRef}
+            onRegionChange={onRegionChange}
+            style={styles.map}
+            region={{
+              latitude: userLocation.latitude,
+              longitude: userLocation.longitude,
+              latitudeDelta: 0.015,
+              longitudeDelta: 0.0121,
+            }}
+          >
+            {filteredMasjids &&
+              filteredMasjids.map((marker: MasjidWithDistance) => (
+                <Marker
+                  key={marker.masjid.id}
+                  coordinate={{
+                    latitude: marker.masjid.latitude,
+                    longitude: marker.masjid.longitude,
+                  }}
+                  title={marker.masjid.name}
+                  onPress={() => handleMarkerPress(marker)}
+                />
+              ))}
+            {userLocation && (
+              <Marker
+                coordinate={userLocation}
+                title="Your Location"
+                pinColor="blue"
+              />
+            )}
+          </MapView>
+        </View>
+      )}
+
+      <View style={styles.masjidDetailsContainer}>
+        {selectedMasjidDetails && (
+          <View>
+            <Text style={styles.masjidName}>
+              Masjid Name: {selectedMasjidDetails.masjid.name}
+            </Text>
+            <Text style={styles.masjidDistance}>
+              Distance: {selectedMasjidDetails.distance} km
+            </Text>
+            <Text style={styles.masjidAddress}>
+              Address: {selectedMasjidDetails.masjid.address.line1}
+            </Text>
+            <Text style={styles.masjidAddress}>
+              Next-Namaz:{' '}
+              {
+                getNextNamaz(new Date().toLocaleTimeString(), namazTimings)
+                  .namaz
+              }
+            </Text>
+          </View>
+        )}
+      </View>
+
       <View style={styles.buttonContainer}>
         <Button
           title="Open"
@@ -223,7 +222,6 @@ const FindMasjid = (props: {
             props.navigation.navigate('MasjidScreen', {
               selectedMasjidId,
             });
-            // Navigate to MasjidScreen with filtered masjids
           }}
         />
       </View>

@@ -1,12 +1,13 @@
 /* eslint-disable max-lines-per-function */
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
 import { useMasjids } from '@/api/masjid/use-masjids';
 import { getNextNamaz } from '@/api/masjid/util';
 import { masjid } from '@/core/supabase';
 import type { RouteProp } from '@/navigation/types';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -31,6 +32,7 @@ const MasjidScreen = () => {
   const { params } = useRoute<RouteProp<'MasjidScreen'>>();
   const selectedMasjidId = params.selectedMasjidId;
   const navigation = useNavigation();
+  const [subscribed, setSubscribed] = useState(false); // State to track subscription status
 
   if (isLoading) {
     return (
@@ -66,8 +68,9 @@ const MasjidScreen = () => {
   );
 
   // Navigation function for subscribing
-  const handleSubscribe = () => {
-    masjid.subscribe(selectedMasjidId);
+  const handleSubscribe = async () => {
+    await masjid.subscribe(selectedMasjidId);
+    setSubscribed(true); // Update subscription status after subscribing
   };
 
   return (
@@ -81,8 +84,12 @@ const MasjidScreen = () => {
       </Text>
       <Text style={styles.text}>Next Namaz: {nextNamaz.time}</Text>
 
-      {/* Button to subscribe */}
-      <Button title="Subscribe" onPress={handleSubscribe} />
+      {/* Conditional rendering for the subscription button */}
+      {subscribed ? (
+        <Button title="Subscribed" disabled />
+      ) : (
+        <Button title="Subscribe" onPress={handleSubscribe} />
+      )}
 
       {/* Other navigation buttons */}
       <Button
