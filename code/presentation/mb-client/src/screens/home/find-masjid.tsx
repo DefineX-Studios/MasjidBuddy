@@ -86,7 +86,7 @@ const fetchUserLocation = async (setUserLocation: Function) => {
   }
 };
 
-const onRegionChange = (region: Region, details: Details) => {
+const onRegionChangeComplete = (region: Region, details: Details) => {
   console.log(
     `region changed: ${JSON.stringify(region)} | ${JSON.stringify(details)}`
   );
@@ -160,7 +160,7 @@ const FindMasjid = (props: {
         <View style={styles.mapContainer}>
           <MapView
             ref={mapRef}
-            onRegionChange={onRegionChange}
+            onRegionChangeComplete={onRegionChangeComplete}
             style={styles.map}
             region={{
               latitude: userLocation.latitude,
