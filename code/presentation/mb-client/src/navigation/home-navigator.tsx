@@ -61,6 +61,7 @@ export const HomeNavigator = () => {
       <Stack.Screen name="AudioScreen" component={AudioScreen} />
       <Stack.Screen name="VideoScreen" component={VideoScreen} />
       <Stack.Screen name="MasjidInfo" component={MasjidInfo} />
+      <Stack.Screen name="FindMasjid" component={FindMasjid} />
     </Stack.Navigator>
   );
 };

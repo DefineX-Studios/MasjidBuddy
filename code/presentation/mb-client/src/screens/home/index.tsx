@@ -1,20 +1,16 @@
+import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import React from 'react';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import type { MasjidWithDistance } from '@/api/masjid';
 import { useMasjids } from '@/api/masjid/use-masjids';
-import {
-  EmptyList,
-  FocusAwareStatusBar,
-  Pressable,
-  Search,
-  Text,
-  View,
-} from '@/ui';
+import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
 
 import { MasjidCard } from './masjid';
 
 export const HomeScreen = () => {
+  const navigation = useNavigation(); // Correct usage of useNavigation hook
   const result = useMasjids();
   const { data, isLoading, isError } = result;
 
@@ -49,20 +45,19 @@ export const HomeScreen = () => {
           estimatedItemSize={20}
         />
 
-        <Pressable
-          className="bg-neutral-50 p-3 dark:bg-charcoal-800"
+        <TouchableOpacity
+          style={{ backgroundColor: '#ddd', padding: 10 }}
           onPress={() => {
-            console.info('Search from here');
+            navigation.navigate('FindMasjid'); // Correct usage of navigation object
           }}
         >
-          <View className="flex flex-row items-center">
-            <Search />
-
-            <Text variant="md" className="flex-1 text-center">
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {/* Replace the Search component with your actual search icon */}
+            <Text style={{ flex: 1, textAlign: 'center' }}>
               FIND NEARBY MASJIDS
             </Text>
           </View>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </>
   );
