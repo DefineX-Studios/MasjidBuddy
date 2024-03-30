@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import type { MasjidWithDistance } from '@/api/masjid';
 import { useMasjids } from '@/api/masjid/use-masjids';
-import { EmptyList, FocusAwareStatusBar, Text, View } from '@/ui';
+import { EmptyList, FocusAwareStatusBar, Pressable, Search, Text, View } from '@/ui';
 
 import { MasjidCard } from './masjid';
 
@@ -45,19 +45,20 @@ export const HomeScreen = () => {
           estimatedItemSize={20}
         />
 
-        <TouchableOpacity
-          style={{ backgroundColor: '#ddd', padding: 10 }}
+        <Pressable
+          className="bg-neutral-50 p-3 dark:bg-charcoal-800"
           onPress={() => {
-            navigation.navigate('FindMasjid'); // Correct usage of navigation object
+            navigation.navigate('FindMasjid');
           }}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            {/* Replace the Search component with your actual search icon */}
-            <Text style={{ flex: 1, textAlign: 'center' }}>
+          <View className="flex flex-row items-center">
+            <Search />
+
+            <Text variant="md" className="flex-1 text-center">
               FIND NEARBY MASJIDS
             </Text>
           </View>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </>
   );
