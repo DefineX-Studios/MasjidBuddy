@@ -19,6 +19,7 @@ export type HomeStackParamList = {
   AudioScreen: undefined;
   VideoScreen: undefined;
   MasjidInfo: { selectedMasjidId: number };
+  FindMasjid1: undefined;
 };
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
@@ -54,7 +55,7 @@ export const HomeNavigator = () => {
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
         </>
       ) : (
-        <Stack.Screen name="FindMasjid" component={FindMasjid} />
+        <Stack.Screen name="FindMasjid1" component={FindMasjid} />
       )}
       <Stack.Screen name="MasjidScreen" component={MasjidScreen} />
       <Stack.Screen name="NamazTimingsScreen" component={NamazTimingsScreen} />
