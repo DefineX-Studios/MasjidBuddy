@@ -1,70 +1,19 @@
-//Import useState and useEffect react native
-import React, { useEffect, useState } from 'react';
-import { Button } from 'react-native';
-import type { Track } from 'react-native-track-player';
-import TrackPlayer, { State, Event, useTrackPlayerEvents, TrackType } from 'react-native-track-player';
-//This is the link used by rocket streaming service for live streaming audio using hls. Check rocket docs for setup info.
-const url = 'http://stream.example.com:8000/radio/hls.m3u8';
-console.log(url)
-const streamDetails: Track = {
-  url: url,
-  title: 'Test Stream',
-  artist: 'Test Artist',
-  isLiveStream: true,
-  type: 'hls',
-};
-console.log('Setting up audio player');
-TrackPlayer.setupPlayer().then(() => {
-  console.log('Player ready');
-  TrackPlayer.add(streamDetails).then(() => {
+import React from 'react';
 
-  });
-    }).catch((err) => {
-      console.log('Error setting up player', err);
-  });
-
-
-
-const state = TrackPlayer.getPlaybackState()
-
-
+import { Backward10s, Forward10s, Play, View } from '@/ui';
 
 export const MusicPlayer = () => {
-
-  console.log('MusicPlayer');
-  useTrackPlayerEvents([Event.PlaybackState], (data)=>{
-    console.log('useTrackPlayerEvents', data);
-  });
-  
-  const [isPlaying, setIsPlaying] = useState(false);
-  if (isPlaying) {
-    console.log('Trying to play');
-    TrackPlayer.play().then(() => {
-      console.log('Playing');
-      TrackPlayer.getPlaybackState().then((state) => {
-        console.log('Playback state', state);
-      });
-    });
-    
-  } else {
-    
-    TrackPlayer.pause().then(() => {
-      console.log('Paused');
-      TrackPlayer.getPlaybackState().then((state) => {
-        console.log('Playback state', state);
-      });
-    
-    });
-  }
-  
-
-  
-
-  //Make an onPress function to play and pause
-  const onButtonPress = () => setIsPlaying(!isPlaying);
-
   return (
-    //return a button with onpress
-    <Button title={isPlaying ? 'Pause'+url : 'Play'} onPress={onButtonPress} />
+    <View className="flex-row justify-between">
+      <View className="flex-auto">
+        <Play />
+      </View>
+      <View className="flex-auto">
+        <Backward10s />
+      </View>
+      <View className="flex-auto">
+        <Forward10s />
+      </View>
+    </View>
   );
 };
