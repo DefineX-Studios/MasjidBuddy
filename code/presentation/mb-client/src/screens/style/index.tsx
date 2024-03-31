@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { FocusAwareStatusBar, ScrollView, View } from '@/ui';
+import { FocusAwareStatusBar, MusicPlayer, ScrollView, View } from '@/ui';
 
 import { ButtonVariants } from './button-variants';
 import { ColorVariants } from './color-variants';
 import { InputVariants } from './input-variants';
 import { TextVariants } from './text-variants';
-import { MusicPlayer } from 'src/ui/audio-player'
 
 export const Style = () => {
   return (
