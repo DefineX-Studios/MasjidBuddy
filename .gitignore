@@ -130,3 +130,7 @@ dist
 .pnp.*
 *.apk
 code/backend/mb-supabase/supabase/.branches/_current_branch
+
+code/presentation/mb-client/ios/
+
+code/presentation/mb-client/android/
