@@ -1,6 +1,6 @@
 import type { PostgrestSingleResponse } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
-import * as Location from 'expo-location'; // Importing Location module from Expo
+import * as Location from 'expo-location';
 import { Platform } from 'react-native';
 
 import * as supabase from '@/core/supabase';

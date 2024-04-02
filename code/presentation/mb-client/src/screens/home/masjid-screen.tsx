@@ -31,7 +31,7 @@ const MasjidScreen = () => {
   const { data: masjidsWithDistance, isLoading, isError } = useMasjids();
   const { params } = useRoute<RouteProp<'MasjidScreen'>>();
   const selectedMasjidId = params.selectedMasjidId;
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
   const [subscribed, setSubscribed] = useState(false); // State to track subscription status
 
   if (isLoading) {
@@ -95,25 +95,25 @@ const MasjidScreen = () => {
       <Button
         title="Namaz Timings"
         onPress={() => {
-          navigation.navigate('NamazTimingsScreen', { selectedMasjidId });
+          navigate('NamazTimingsScreen', { selectedMasjidId });
         }}
       />
       <Button
         title="Audio Live"
         onPress={() => {
-          navigation.navigate('AudioScreen');
+          navigate('AudioScreen');
         }}
       />
       <Button
         title="Video Offline"
         onPress={() => {
-          navigation.navigate('VideoScreen');
+          navigate('VideoScreen');
         }}
       />
       <Button
         title="Masjid Info"
         onPress={() => {
-          navigation.navigate('MasjidInfo', { selectedMasjidId });
+          navigate('MasjidInfo', { selectedMasjidId });
         }}
       />
     </View>

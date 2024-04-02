@@ -14,7 +14,6 @@ export type HomeStackParamList = {
   HomeScreen: undefined;
   FindMasjid: undefined;
   MasjidScreen: { selectedMasjidId: number };
-  TestScreen: undefined;
   NamazTimingsScreen: { selectedMasjidId: number };
   AudioScreen: undefined;
   VideoScreen: undefined;
@@ -51,9 +50,7 @@ export const HomeNavigator = () => {
     <Stack.Navigator>
       {/* Render HomeNavigator if there are subscribed masjids, otherwise render FindMasjid */}
       {hasSubscribedMasjids ? (
-        <>
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
-        </>
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
       ) : (
         <Stack.Screen name="FindMasjid1" component={FindMasjid} />
       )}

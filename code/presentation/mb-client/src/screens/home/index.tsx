@@ -10,7 +10,7 @@ import { EmptyList, FocusAwareStatusBar, Pressable, Search, Text, View } from '@
 import { MasjidCard } from './masjid';
 
 export const HomeScreen = () => {
-  const navigation = useNavigation(); // Correct usage of useNavigation hook
+  const { navigate } = useNavigation(); // Correct usage of useNavigation hook
   const result = useMasjids();
   const { data, isLoading, isError } = result;
 
@@ -48,7 +48,11 @@ export const HomeScreen = () => {
         <Pressable
           className="bg-neutral-50 p-3 dark:bg-charcoal-800"
           onPress={() => {
+<<<<<<< Updated upstream
             navigation.navigate('FindMasjid');
+=======
+            navigate('FindMasjid');
+>>>>>>> Stashed changes
           }}
         >
           <View className="flex flex-row items-center">

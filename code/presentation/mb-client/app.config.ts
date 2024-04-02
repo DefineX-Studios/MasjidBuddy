@@ -35,7 +35,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     package: Env.PACKAGE,
     config: {
       googleMaps: {
-        apiKey: 'AIzaSyDrs_gpMZ97ldQhxHBcd28UAQcUBylz9AM',
+        apiKey: Env.API_KEY,
       },
     },
   },
