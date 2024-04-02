@@ -1,11 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import React from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import type { MasjidWithDistance } from '@/api/masjid';
 import { useMasjids } from '@/api/masjid/use-masjids';
-import { EmptyList, FocusAwareStatusBar, Pressable, Search, Text, View } from '@/ui';
+import {
+  EmptyList,
+  FocusAwareStatusBar,
+  Pressable,
+  Search,
+  Text,
+  View,
+} from '@/ui';
 
 import { MasjidCard } from './masjid';
 
@@ -48,11 +54,7 @@ export const HomeScreen = () => {
         <Pressable
           className="bg-neutral-50 p-3 dark:bg-charcoal-800"
           onPress={() => {
-<<<<<<< Updated upstream
-            navigation.navigate('FindMasjid');
-=======
             navigate('FindMasjid');
->>>>>>> Stashed changes
           }}
         >
           <View className="flex flex-row items-center">
