@@ -1,32 +1,12 @@
 /* eslint-disable max-lines-per-function */
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
 
 import { useMasjids } from '@/api/masjid/use-masjids';
 import { getNextNamaz } from '@/api/masjid/util';
 import { masjid } from '@/core/supabase';
 import type { RouteProp } from '@/navigation/types';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#333',
-  },
-  text: {
-    color: 'green',
-    marginBottom: 10,
-    fontSize: 18,
-    fontWeight: 'bold',
-    borderWidth: 1,
-    borderColor: 'green',
-    padding: 10,
-    borderRadius: 5,
-  },
-});
-
+import { Pressable, Text, View } from '@/ui';
 const MasjidScreen = () => {
   const { data: masjidsWithDistance, isLoading, isError } = useMasjids();
   const { params } = useRoute<RouteProp<'MasjidScreen'>>();
@@ -74,48 +54,75 @@ const MasjidScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Masjid Name: {selectedMasjid.masjid.name}</Text>
-      <Text style={styles.text}>
-        Masjid Address: {selectedMasjid.masjid.address.line1}
+    <View className="flex-1 items-center justify-center bg-gray-900">
+      <Text className="mb-5 text-xl font-bold text-green-500">
+        {selectedMasjid.masjid.name}
       </Text>
-      <Text style={styles.text}>
+      <Text className="mb-4 text-lg font-bold text-green-500">
+        Next Namaz: {nextNamaz.namaz}
+      </Text>
+      {/* <Text className="mb-4 text-lg font-bold text-green-500">
         Masjid Distance: {selectedMasjid.distance.toFixed(2)} km
+      </Text> */}
+      <Text className="mb-4 text-lg font-bold text-green-500">
+        Namaz Time: {nextNamaz.time}
       </Text>
-      <Text style={styles.text}>Next Namaz: {nextNamaz.time}</Text>
 
       {/* Conditional rendering for the subscription button */}
-      {subscribed ? (
-        <Button title="Subscribed" disabled />
-      ) : (
-        <Button title="Subscribe" onPress={handleSubscribe} />
-      )}
 
       {/* Other navigation buttons */}
-      <Button
-        title="Namaz Timings"
+      <Pressable
+        className="mb-6 flex flex-row items-center bg-green-500 p-3"
         onPress={() => {
           navigate('NamazTimingsScreen', { selectedMasjidId });
         }}
-      />
-      <Button
-        title="Audio Live"
-        onPress={() => {
-          navigate('AudioScreen');
-        }}
-      />
-      <Button
-        title="Video Offline"
-        onPress={() => {
-          navigate('VideoScreen');
-        }}
-      />
-      <Button
-        title="Masjid Info"
+      >
+        <Text className="flex-1 text-center">Namaz Timings</Text>
+      </Pressable>
+
+      <Pressable
+        className="mb-6 flex flex-row items-center bg-green-500 p-3"
         onPress={() => {
           navigate('MasjidInfo', { selectedMasjidId });
         }}
-      />
+      >
+        <Text className="flex-1 text-center">Masjid Info</Text>
+      </Pressable>
+
+      <Pressable
+        className="mb-6 flex flex-row items-center bg-green-500 p-9"
+        onPress={() => {
+          navigate('AudioScreen');
+        }}
+      >
+        <Text variant="lg" className="flex-1 text-center">
+          Audio Live
+        </Text>
+      </Pressable>
+      <Pressable
+        className="mb-9 flex flex-row items-center bg-green-500 p-3"
+        onPress={() => {
+          navigate('VideoScreen');
+        }}
+      >
+        <Text className="flex-1 text-center">Video Offline</Text>
+      </Pressable>
+
+      {subscribed ? (
+        <Pressable
+          disabled
+          className="mt-23 mb-0 flex flex-row items-center bg-charcoal-200 p-3"
+        >
+          <Text className="flex-1 text-center">Subscribed</Text>
+        </Pressable>
+      ) : (
+        <Pressable
+          onPress={handleSubscribe}
+          className="flex flex-row items-center bg-red-500 p-4"
+        >
+          <Text className="flex-1 text-center">Subscribe</Text>
+        </Pressable>
+      )}
     </View>
   );
 };
