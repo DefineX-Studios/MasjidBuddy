@@ -46,16 +46,20 @@ const MasjidInfo = () => {
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center">
-        <Text className="mb-10 text-lg">Loading...</Text>
+      <View className="flex-1 items-center justify-center bg-gray-900">
+        <Text className="mb-5 text-xl font-bold text-green-500">
+          Loading...
+        </Text>
       </View>
     );
   }
 
   if (error) {
     return (
-      <View className="flex-1 items-center">
-        <Text className="mb-10 ">Error: {error}</Text>
+      <View className="flex-1 items-center justify-center bg-gray-900">
+        <Text className="mb-5 text-xl font-bold text-green-500">
+          Error: {error}
+        </Text>
       </View>
     );
   }
@@ -71,7 +75,7 @@ const MasjidInfo = () => {
   }
 
   return (
-    <View className="flex-1 items-center justify-center bg-gray-900">
+    <View className="flex-1 items-center justify-center bg-gray-900 ">
       <Text className="mb-4 text-lg font-bold text-green-500">
         Name: {masjidInfo.name}
       </Text>

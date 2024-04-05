@@ -1,33 +1,10 @@
 /* eslint-disable max-lines-per-function */
 import { useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 
 import { supabase } from '@/core/supabase';
 import type { RouteProp } from '@/navigation/types';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#333', // Dark grey background color
-  },
-  text: {
-    color: 'green', // Green font color
-    marginBottom: 10,
-    fontSize: 18, // Increased font size
-    fontWeight: 'bold', // Bold text
-  },
-  timingsContainer: {
-    backgroundColor: '#FFF', // White background color for the container
-    padding: 10, // Padding around the timings
-    borderRadius: 5, // Rounded corners
-  },
-  timingsText: {
-    marginBottom: 5, // Spacing between timings
-  },
-});
+import { Text, View } from '@/ui';
 
 const NamazTimingsScreen = () => {
   const [namazTimings, setNamazTimings] = useState<any>(null);
@@ -69,20 +46,24 @@ const NamazTimingsScreen = () => {
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.text}>Loading...</Text>
+      <View className="flex-1 items-center justify-center bg-gray-900">
+        <Text className="mb-5 text-xl font-bold text-green-500">
+          Loading...
+        </Text>
       </View>
     );
   }
 
   if (error) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.text}>Error: {error}</Text>
+      <View className="flex-1 items-center justify-center bg-gray-900">
+        <Text className="mb-5 text-xl font-bold text-green-500">
+          Error: {error}
+        </Text>
       </View>
     );
   }
-  console.log(namazTimings);
+
   const fajrTiming = namazTimings.find(
     (timing: { namaz: string }) => timing.namaz === 'fajar'
   );
@@ -106,30 +87,31 @@ const NamazTimingsScreen = () => {
   const ishaTiming = namazTimings.find(
     (timing: { namaz: string }) => timing.namaz === 'isha'
   );
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>
+    <View className="flex-1 items-center justify-center bg-gray-900">
+      <Text className="mb-5 text-xl font-bold text-green-500">
         Namaz Timings for Masjid:{' '}
         {namazTimings.length > 0 ? namazTimings[0].masjid_id : 'Unknown'}
       </Text>
-      {/* Display the namaz timings for the selected masjid */}
-      <View style={styles.timingsContainer}>
-        <Text style={styles.timingsText}>
+      <View>
+        <Text className="mb-4 text-lg font-bold text-green-500">
           Fajr: {fajrTiming ? fajrTiming.time : 'Unknown'}
         </Text>
-        <Text style={styles.timingsText}>
+        <Text className="mb-4 text-lg font-bold text-green-500">
           Dhuhr: {dhuhrTiming ? dhuhrTiming.time : 'Unknown'}
         </Text>
-        <Text style={styles.timingsText}>
+        <Text className="mb-4 text-lg font-bold text-green-500">
           Asr: {asrTiming ? asrTiming.time : 'Unknown'}
         </Text>
-        <Text style={styles.timingsText}>
+        <Text className="mb-4 text-lg font-bold text-green-500">
           Maghrib: {maghribTiming ? maghribTiming.time : 'Unknown'}
         </Text>
-        <Text style={styles.timingsText}>
+        <Text className="mb-4 text-lg font-bold text-green-500">
           Isha: {ishaTiming ? ishaTiming.time : 'Unknown'}
         </Text>
       </View>
+      {/* Music Play Button */}
     </View>
   );
 };
