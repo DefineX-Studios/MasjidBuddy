@@ -1,21 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import React, { useState } from 'react';
-import {
-  Button,
-  FlatList,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Button, FlatList, StyleSheet, TextInput } from 'react-native';
 import type { Details, Region } from 'react-native-maps';
 import MapView, { enableLatestRenderer, Marker } from 'react-native-maps';
 
 import type { MasjidWithDistance, NamazTimings } from '@/api/masjid/types';
 import { useMasjids } from '@/api/masjid/use-masjids';
 import { getNextNamaz } from '@/api/masjid/util';
+import { Text, TouchableOpacity, View } from '@/ui';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,48 +19,6 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     flex: 1,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
-    padding: 10,
-    margin: 10,
-  },
-  buttonContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  masjidDetailsContainer: {
-    backgroundColor: '#f0f0f0',
-    padding: 10,
-    marginTop: 10,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#ccc',
-  },
-  masjidName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 5,
-    color: '#333',
-  },
-  masjidDistance: {
-    fontSize: 16,
-    marginBottom: 5,
-    color: '#555',
-  },
-  masjidAddress: {
-    fontSize: 16,
-    color: '#666',
-  },
-  listItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  listItemText: {
-    fontSize: 16,
   },
 });
 
@@ -133,10 +84,10 @@ const FindMasjid = (props: {
     ) ?? [];
 
   return (
-    <View style={styles.container}>
-      <View style={{ marginTop: 10 }}>
+    <View className="flex-1 bg-gray-100 pb-6">
+      <View className="flex-1 bg-gray-100 pb-0 pt-20">
         <TextInput
-          style={styles.input}
+          className="bg-gray-200"
           placeholder="Search"
           onChangeText={(text) => setSearchQuery(text)}
           value={searchQuery}
@@ -146,10 +97,10 @@ const FindMasjid = (props: {
           data={searchQuery ? filteredMasjids : []}
           renderItem={({ item }) => (
             <TouchableOpacity
-              style={styles.listItem}
+              className="bg-gray-200"
               onPress={() => handleMarkerPress(item)}
             >
-              <Text style={styles.listItemText}>{item.masjid.name}</Text>
+              <Text className="bg-green-500">{item.masjid.name}</Text>
             </TouchableOpacity>
           )}
           keyExtractor={(item) => item.masjid.id.toString()}
@@ -157,54 +108,55 @@ const FindMasjid = (props: {
       </View>
 
       {userLocation && (
-        <View style={styles.mapContainer}>
-          <MapView
-            ref={mapRef}
-            onRegionChangeComplete={onRegionChangeComplete}
-            style={styles.map}
-            region={{
-              latitude: userLocation.latitude,
-              longitude: userLocation.longitude,
-              latitudeDelta: 0.015,
-              longitudeDelta: 0.0121,
-            }}
-          >
-            {filteredMasjids &&
-              filteredMasjids.map((marker: MasjidWithDistance) => (
+        <View className="flex-1 pb-20 ">
+          <View className="h-3 flex-1">
+            <MapView
+              ref={mapRef}
+              onRegionChangeComplete={onRegionChangeComplete}
+              style={styles.map}
+              region={{
+                latitude: userLocation.latitude,
+                longitude: userLocation.longitude,
+                latitudeDelta: 0.015,
+                longitudeDelta: 0.0121,
+              }}
+            >
+              {filteredMasjids &&
+                filteredMasjids.map((marker: MasjidWithDistance) => (
+                  <Marker
+                    key={marker.masjid.id}
+                    coordinate={{
+                      latitude: marker.masjid.latitude,
+                      longitude: marker.masjid.longitude,
+                    }}
+                    title={marker.masjid.name}
+                    onPress={() => handleMarkerPress(marker)}
+                  />
+                ))}
+              {userLocation && (
                 <Marker
-                  key={marker.masjid.id}
-                  coordinate={{
-                    latitude: marker.masjid.latitude,
-                    longitude: marker.masjid.longitude,
-                  }}
-                  title={marker.masjid.name}
-                  onPress={() => handleMarkerPress(marker)}
+                  coordinate={userLocation}
+                  title="Your Location"
+                  pinColor="blue"
                 />
-              ))}
-            {userLocation && (
-              <Marker
-                coordinate={userLocation}
-                title="Your Location"
-                pinColor="blue"
-              />
-            )}
-          </MapView>
+              )}
+            </MapView>
+          </View>
         </View>
       )}
-
-      <View style={styles.masjidDetailsContainer}>
+      <View className="border-r-5 border-#ccc mt-10 p-10">
         {selectedMasjidDetails && (
           <View>
-            <Text style={styles.masjidName}>
+            <Text className="mb-5 bg-green-300">
               Masjid Name: {selectedMasjidDetails.masjid.name}
             </Text>
-            <Text style={styles.masjidDistance}>
+            <Text className="mb-5 bg-green-300">
               Distance: {selectedMasjidDetails.distance} km
             </Text>
-            <Text style={styles.masjidAddress}>
+            <Text className="mb-5 bg-green-300">
               Address: {selectedMasjidDetails.masjid.address.line1}
             </Text>
-            <Text style={styles.masjidAddress}>
+            <Text className="mb-5 bg-green-300">
               Next-Namaz:{' '}
               {
                 getNextNamaz(new Date().toLocaleTimeString(), namazTimings)
@@ -215,7 +167,7 @@ const FindMasjid = (props: {
         )}
       </View>
 
-      <View style={styles.buttonContainer}>
+      <View className="bg-orange-200">
         <Button
           title="Open"
           onPress={() => {
