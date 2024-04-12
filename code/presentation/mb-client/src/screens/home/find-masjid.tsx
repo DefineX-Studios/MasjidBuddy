@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
+import { FlashList } from '@shopify/flash-list';
 import * as Location from 'expo-location';
 import React, { useState } from 'react';
-import { Button, FlatList, StyleSheet, TextInput } from 'react-native';
+import { Button, StyleSheet, TextInput } from 'react-native';
 import type { Details, Region } from 'react-native-maps';
 import MapView, { enableLatestRenderer, Marker } from 'react-native-maps';
 
@@ -89,19 +90,21 @@ const FindMasjid = () => {
           onChangeText={(text) => setSearchQuery(text)}
           value={searchQuery}
         />
-
-        <FlatList
-          data={searchQuery ? filteredMasjids : []}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              className="bg-gray-200"
-              onPress={() => handleMarkerPress(item)}
-            >
-              <Text className="bg-green-500">{item.masjid.name}</Text>
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item.masjid.id.toString()}
-        />
+        <View className="h-20 flex-1">
+          <FlashList
+            data={searchQuery ? filteredMasjids : []}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                className="bg-gray-200"
+                onPress={() => handleMarkerPress(item)}
+              >
+                <Text className="bg-green-500">{item.masjid.name}</Text>
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item) => item.masjid.id.toString()}
+            estimatedItemSize={20}
+          />
+        </View>
       </View>
 
       {userLocation && (
