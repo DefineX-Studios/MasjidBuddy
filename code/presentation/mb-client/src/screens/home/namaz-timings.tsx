@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable max-lines-per-function */
 import { useRoute } from '@react-navigation/native';
 import React, { useState } from 'react';
@@ -13,13 +14,14 @@ const NamazTimingsScreen = () => {
   const [namazTimings, setNamazTimings] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [fetchExecuted, setFetchExecuted] = useState(false); // Flag to track if fetch operation is executed
 
+  // Function to fetch namaz timings
   const fetchNamazTimings = async () => {
     try {
       setIsLoading(true);
       setError(null);
 
-      // eslint-disable-next-line @typescript-eslint/no-shadow
       const { data, error } = await supabase
         .from('namaz_timing')
         .select('*')
@@ -30,16 +32,18 @@ const NamazTimingsScreen = () => {
       }
 
       setNamazTimings(data);
-      // eslint-disable-next-line @typescript-eslint/no-shadow, no-catch-shadow
+      // eslint-disable-next-line no-catch-shadow
     } catch (error) {
-      setError('error ');
+      setError('Error');
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (selectedMasjidId) {
+  // Call fetchNamazTimings when selectedMasjidId changes and fetchExecuted is false
+  if (selectedMasjidId && !fetchExecuted) {
     fetchNamazTimings();
+    setFetchExecuted(true); // Set flag to true after fetch operation is executed
   }
 
   if (isLoading) {
