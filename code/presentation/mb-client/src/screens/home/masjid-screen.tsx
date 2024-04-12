@@ -50,8 +50,16 @@ const MasjidScreen = () => {
 
   // Navigation function for subscribing
   const handleSubscribe = async () => {
-    await masjid.subscribe(selectedMasjidId);
-    setSubscribed(true); // Update subscription status after subscribing
+    try {
+      // Make the API request to subscribe
+      await masjid.subscribe(selectedMasjidId);
+
+      // If the request succeeds, update the client state
+      setSubscribed(true);
+    } catch (error) {
+      // If the request fails, handle the error
+      console.error('Error subscribing:', error);
+    }
   };
 
   return (

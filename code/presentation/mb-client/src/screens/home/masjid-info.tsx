@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable no-catch-shadow */
 /* eslint-disable max-lines-per-function */
 import { useRoute } from '@react-navigation/native';
 import React, { useState } from 'react';
@@ -16,11 +14,9 @@ const MasjidInfo = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Function to fetch masjid details
   const fetchMasjidDetails = async () => {
     try {
-      setIsLoading(true);
-      setError(null);
-
       const { data: masjidDetails, error: masjidError } = await supabase
         .from('masjid')
         .select('*')
@@ -34,7 +30,8 @@ const MasjidInfo = () => {
         throw new Error('Masjid details not found');
       }
 
-      setMasjidInfo(masjidDetails[0]); // Wrap in array if needed
+      setMasjidInfo(masjidDetails[0]);
+      // eslint-disable-next-line no-catch-shadow, @typescript-eslint/no-shadow
     } catch (error) {
       setError('Error');
     } finally {
@@ -42,8 +39,10 @@ const MasjidInfo = () => {
     }
   };
 
-  // Fetch masjid details when the component renders
-  fetchMasjidDetails();
+  // Call fetchMasjidDetails when component mounts
+  if (masjidInfo === null && isLoading) {
+    fetchMasjidDetails();
+  }
 
   if (isLoading) {
     return (
