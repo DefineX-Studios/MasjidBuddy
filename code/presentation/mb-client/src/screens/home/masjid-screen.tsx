@@ -31,6 +31,7 @@ const MasjidScreen = () => {
   }
 
   const selectedMasjid = masjidsWithDistance.find(
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     (masjid) => masjid.masjid.id === selectedMasjidId
   );
 

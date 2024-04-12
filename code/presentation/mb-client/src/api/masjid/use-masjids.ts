@@ -21,6 +21,7 @@ export const useMasjids = () => {
 
       let location = null;
       if (Platform.OS === 'android') {
+        // Ios permission is handled differently
         const { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') {
           console.log('Permission to access location was denied');

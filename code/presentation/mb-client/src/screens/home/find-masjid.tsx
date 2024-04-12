@@ -44,12 +44,8 @@ const onRegionChangeComplete = (region: Region, details: Details) => {
 };
 
 // eslint-disable-next-line max-lines-per-function
-const FindMasjid = (props: {
-  navigation: {
-    navigate: (arg0: string, arg1: { selectedMasjidId: number | null }) => void;
-  };
-}) => {
-  const _navigation = useNavigation();
+const FindMasjid = () => {
+  const navigation = useNavigation();
   const result = useMasjids();
   const mapRef = React.createRef<MapView>();
 
@@ -59,7 +55,8 @@ const FindMasjid = (props: {
     longitude: number;
   } | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedMasjidId, setSelectedMasjidId] = useState<number | null>(null);
+  const [selectedMasjidId, setSelectedMasjidId] = useState<number>(0);
+
   const [selectedMasjidDetails, setSelectedMasjidDetails] =
     useState<MasjidWithDistance | null>(null);
   const [namazTimings, setNamazTimings] = useState<NamazTimings>(
@@ -171,7 +168,7 @@ const FindMasjid = (props: {
         <Button
           title="Open"
           onPress={() => {
-            props.navigation.navigate('MasjidScreen', {
+            navigation.navigate('MasjidScreen', {
               selectedMasjidId,
             });
           }}

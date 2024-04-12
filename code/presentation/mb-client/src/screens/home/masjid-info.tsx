@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-catch-shadow */
 /* eslint-disable max-lines-per-function */
 import { useRoute } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { supabase } from '@/core/supabase';
 import type { RouteProp } from '@/navigation/types';
@@ -14,35 +16,34 @@ const MasjidInfo = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchMasjidDetails = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
+  const fetchMasjidDetails = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
 
-        const { data: masjidDetails, error: masjidError } = await supabase
-          .from('masjid')
-          .select('*')
-          .eq('id', selectedMasjidId);
+      const { data: masjidDetails, error: masjidError } = await supabase
+        .from('masjid')
+        .select('*')
+        .eq('id', selectedMasjidId);
 
-        if (masjidError) {
-          throw new Error('Error fetching masjid details');
-        }
-
-        if (!masjidDetails || masjidDetails.length === 0) {
-          throw new Error('Masjid details not found');
-        }
-
-        setMasjidInfo(masjidDetails[0]); // Wrap in array if needed
-      } catch (error) {
-        setError('Error');
-      } finally {
-        setIsLoading(false);
+      if (masjidError) {
+        throw new Error('Error fetching masjid details');
       }
-    };
 
-    fetchMasjidDetails();
-  }, [selectedMasjidId]);
+      if (!masjidDetails || masjidDetails.length === 0) {
+        throw new Error('Masjid details not found');
+      }
+
+      setMasjidInfo(masjidDetails[0]); // Wrap in array if needed
+    } catch (error) {
+      setError('Error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fetch masjid details when the component renders
+  fetchMasjidDetails();
 
   if (isLoading) {
     return (
