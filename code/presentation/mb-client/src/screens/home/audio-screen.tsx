@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Text, View } from '@/ui';
 
-const AudioScreen = () => {
+export const AudioScreen = () => {
   return (
     <View className="flex-1 items-center justify-center bg-gray-900">
       <Text className="mb-5 text-xl font-bold text-green-500">
@@ -11,5 +11,3 @@ const AudioScreen = () => {
     </View>
   );
 };
-
-export default AudioScreen;

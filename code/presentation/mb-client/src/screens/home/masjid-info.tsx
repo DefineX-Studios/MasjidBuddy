@@ -6,7 +6,7 @@ import { supabase } from '@/core/supabase';
 import type { RouteProp } from '@/navigation/types';
 import { Text, View } from '@/ui';
 
-const MasjidInfo = () => {
+export const MasjidInfo = () => {
   const { params } = useRoute<RouteProp<'MasjidInfo'>>();
   const selectedMasjidId = params.selectedMasjidId;
 
@@ -89,5 +89,3 @@ const MasjidInfo = () => {
     </View>
   );
 };
-
-export default MasjidInfo;

@@ -7,7 +7,7 @@ import { supabase } from '@/core/supabase';
 import type { RouteProp } from '@/navigation/types';
 import { Text, View } from '@/ui';
 
-const NamazTimingsScreen = () => {
+export const NamazTimingsScreen = () => {
   const { params } = useRoute<RouteProp<'NamazTimingsScreen'>>();
   const selectedMasjidId = params.selectedMasjidId;
 
@@ -83,5 +83,3 @@ const NamazTimingsScreen = () => {
     </View>
   );
 };
-
-export default NamazTimingsScreen;

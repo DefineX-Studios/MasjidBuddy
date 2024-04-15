@@ -45,7 +45,7 @@ const onRegionChangeComplete = (region: Region, details: Details) => {
 };
 
 // eslint-disable-next-line max-lines-per-function
-const FindMasjid = () => {
+export const FindMasjid = () => {
   const navigation = useNavigation();
   const result = useMasjids();
   const mapRef = React.createRef<MapView>();
@@ -182,5 +182,3 @@ const FindMasjid = () => {
 };
 
 enableLatestRenderer();
-
-export default FindMasjid;

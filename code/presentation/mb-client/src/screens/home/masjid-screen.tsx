@@ -7,7 +7,7 @@ import { getNextNamaz } from '@/api/masjid/util';
 import { masjid } from '@/core/supabase';
 import type { RouteProp } from '@/navigation/types';
 import { Pressable, Text, View } from '@/ui';
-const MasjidScreen = () => {
+export const MasjidScreen = () => {
   const { data: masjidsWithDistance, isLoading, isError } = useMasjids();
   const { params } = useRoute<RouteProp<'MasjidScreen'>>();
   const selectedMasjidId = params.selectedMasjidId;
@@ -135,5 +135,3 @@ const MasjidScreen = () => {
     </View>
   );
 };
-
-export default MasjidScreen;
