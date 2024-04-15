@@ -26,6 +26,43 @@ export const login = async (
     type: provider,
   };
 };
+export const fetchMasjidDetails = async (selectedMasjidId: number) => {
+  try {
+    const { data: masjidDetails, error: masjidError } = await supabase
+      .from('masjid')
+      .select('*')
+      .eq('id', selectedMasjidId);
+
+    if (masjidError) {
+      throw new Error('Error fetching masjid details');
+    }
+
+    if (!masjidDetails || masjidDetails.length === 0) {
+      throw new Error('Masjid details not found');
+    }
+
+    return masjidDetails[0];
+  } catch (error) {
+    throw new Error('Error fetching masjid details');
+  }
+};
+
+export const fetchNamazTimings = async (selectedMasjidId: number) => {
+  try {
+    const { data, error } = await supabase
+      .from('namaz_timing')
+      .select('*')
+      .eq('masjid_id', selectedMasjidId);
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  } catch (error) {
+    throw new Error('Error fetching namaz timings');
+  }
+};
 
 export const setSession = async (token: TokenType) => {
   const { data, error: _ } = await supabase.auth.setSession({
