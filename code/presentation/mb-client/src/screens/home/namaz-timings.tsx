@@ -20,7 +20,7 @@ export const NamazTimingsScreen = () => {
       .then((data) => {
         setNamazTimings(data);
       })
-      // eslint-disable-next-line @typescript-eslint/no-shadow
+
       .catch((error) => {
         setError(error);
       })
