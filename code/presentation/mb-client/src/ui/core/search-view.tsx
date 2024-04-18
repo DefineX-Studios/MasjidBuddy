@@ -21,8 +21,13 @@ export const useSearch = <T,>(
         .includes(searchQuery.toLowerCase())
     ) ?? [];
 
+  const handleItemSelect = (item: T) => {
+    setSelectedMasjidWithDistance(item);
+    setSearchQuery(''); // Clear the search query after selecting an item
+  };
+
   return (
-    <View className="flex</T>-1 bg-gray-100 pb-0 pt-20">
+    <View className="flex-1 bg-gray-100 pb-0 pt-20">
       <TextInput
         className="bg-gray-200"
         placeholder="Search"
@@ -35,7 +40,7 @@ export const useSearch = <T,>(
           renderItem={({ item }) => (
             <TouchableOpacity
               className="bg-gray-200"
-              onPress={() => setSelectedMasjidWithDistance(item)}
+              onPress={() => handleItemSelect(item)}
             >
               <Text className="bg-green-500">{objToSearchString(item)}</Text>
             </TouchableOpacity>

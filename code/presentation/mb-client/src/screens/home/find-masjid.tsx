@@ -57,8 +57,23 @@ const SelectMasjidView = (selectedMasjidWithDistance: MasjidWithDistance) => {
   );
 };
 
-export const FindMasjid = () => {
+const OpenButton = (selectedMasjidWithDistance: MasjidWithDistance) => {
   const { navigate } = useNavigation();
+  return (
+    <View className="bg-orange-200">
+      <Button
+        title="Open"
+        onPress={() => {
+          if (!selectedMasjidWithDistance) return;
+          navigate('MasjidScreen', {
+            selectedMasjidId: selectedMasjidWithDistance.masjid.id,
+          });
+        }}
+      />
+    </View>
+  );
+};
+export const FindMasjid = () => {
   const {
     data: masjidsWithDistance,
     isLoading: _isLoading,
@@ -122,18 +137,9 @@ export const FindMasjid = () => {
       {selectedMasjidWithDistance && (
         <SelectMasjidView {...selectedMasjidWithDistance} />
       )}
-
-      <View className="bg-orange-200">
-        <Button
-          title="Open"
-          onPress={() => {
-            if (!selectedMasjidWithDistance) return;
-            navigate('MasjidScreen', {
-              selectedMasjidId: selectedMasjidWithDistance.masjid.id,
-            });
-          }}
-        />
-      </View>
+      {selectedMasjidWithDistance && (
+        <OpenButton {...selectedMasjidWithDistance} />
+      )}
     </View>
   );
 };
