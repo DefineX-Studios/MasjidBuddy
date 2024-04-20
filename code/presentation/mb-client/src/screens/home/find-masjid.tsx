@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Button, StyleSheet } from 'react-native';
