@@ -15,23 +15,16 @@ import {
 
 import { MasjidCard } from './masjid';
 
-const renderItem = (
-  { item }: { item: any } // Adjust the type as needed
-) => (
-  <MasjidCard
-    {...item}
-    onPress={() => console.info(`${item.masjid.name} pressed`)} // Adjust the property access based on the actual item structure
-  />
-);
-
 const HomeScreenContent = ({
   filteredMasjids,
   isLoading,
   navigate,
+  renderItem,
 }: {
   filteredMasjids: any;
   isLoading: boolean;
   navigate: any;
+  renderItem: any;
 }) => (
   <View style={{ flex: 1 }}>
     <FocusAwareStatusBar />
@@ -87,6 +80,17 @@ export const HomeScreen = () => {
     }
   };
 
+  const renderItem = (
+    { item }: { item: any } // Adjust the type as needed
+  ) => (
+    <MasjidCard
+      {...item}
+      onPress={() => {
+        const selectedMasjidId = item.masjid.id;
+        navigate('MasjidScreen', { selectedMasjidId });
+      }} // Adjust the property access based on the actual item structure
+    />
+  );
   // Fetch subscribed masjids only once when the component mounts
   if (!isSubscribedFetched) {
     fetchSubscribedMasjids();
@@ -112,6 +116,7 @@ export const HomeScreen = () => {
       filteredMasjids={filteredMasjids}
       isLoading={isLoading}
       navigate={navigate}
+      renderItem={renderItem}
     />
   );
 };

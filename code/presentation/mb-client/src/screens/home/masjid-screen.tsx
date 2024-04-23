@@ -12,8 +12,9 @@ export const MasjidScreen = () => {
   const { params } = useRoute<RouteProp<'MasjidScreen'>>();
   const selectedMasjidId = params.selectedMasjidId;
   const { navigate } = useNavigation();
-  const [subscribed, setSubscribed] = useState(false); // State to track subscription status
 
+  const [subscribed, setSubscribed] = useState(false); // State to track subscription status
+  console.log(selectedMasjidId);
   if (isLoading) {
     return (
       <View>
