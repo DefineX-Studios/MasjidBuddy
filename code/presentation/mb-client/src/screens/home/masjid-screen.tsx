@@ -13,7 +13,7 @@ export const MasjidScreen = () => {
   const selectedMasjidId = params.selectedMasjidId;
   const { navigate } = useNavigation();
 
-  const [subscribed, setSubscribed] = useState(false); // State to track subscription status
+  const [isSubscribed, setSubscribed] = useState(false); // State to track subscription status
   console.log(selectedMasjidId);
   if (isLoading) {
     return (
@@ -52,11 +52,16 @@ export const MasjidScreen = () => {
   // Navigation function for subscribing
   const handleSubscribe = async () => {
     try {
-      // Make the API request to subscribe
-      await masjid.subscribe(selectedMasjidId);
-
-      // If the request succeeds, update the client state
-      setSubscribed(true);
+      if (isSubscribed) {
+        await masjid.unsubscribe(selectedMasjidId);
+        console.log(`You unsubscribed from ${selectedMasjidId}`);
+      } else {
+        // Make the API request to subscribe
+        const response = await masjid.subscribe(selectedMasjidId);
+        console.log(response);
+        // If the request succeeds, update the client state
+      }
+      setSubscribed(!isSubscribed);
     } catch (error) {
       // If the request fails, handle the error
       console.error('Error subscribing:', error);
@@ -118,12 +123,12 @@ export const MasjidScreen = () => {
         <Text className="flex-1 text-center">Video Offline</Text>
       </Pressable>
 
-      {subscribed ? (
+      {isSubscribed ? (
         <Pressable
-          disabled
-          className="mt-23 mb-0 flex flex-row items-center bg-charcoal-200 p-3"
+          onPress={handleSubscribe}
+          className="mt-23 mb-0 flex flex-row items-center bg-black p-3"
         >
-          <Text className="flex-1 text-center">Subscribed</Text>
+          <Text className="flex-1 text-center">UnSubscribe</Text>
         </Pressable>
       ) : (
         <Pressable

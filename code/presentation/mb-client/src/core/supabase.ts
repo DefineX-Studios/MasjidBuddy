@@ -88,10 +88,25 @@ export const masjid = {
   },
 
   async subscribe(masjid_id: number) {
-    return await supabase.rpc('subscribe_to_masjid', { masjid_id });
+    return await supabase
+      .from('user_masjid_subscription')
+      .insert([{ masjid_id: masjid_id }])
+      .select();
   },
 
   async unsubscribe(masjid_id: number) {
-    return await supabase.rpc('unsubscribe_from_masjid', { masjid_id });
+    return await supabase
+      .from('user_masjid_subscription')
+      .delete()
+      .eq('masjid_id', masjid_id);
+  },
+  async isSubscribed(masjid_id: number) {
+    const subscribedMasjid = await supabase
+      .from('user_masjid_subscription')
+      .select('*')
+      .eq('masjid_id', masjid_id)
+      .single(); // Use single() to ensure only one result is returned
+
+    return subscribedMasjid !== null; // Return true if a masjid is found, false otherwise
   },
 };
