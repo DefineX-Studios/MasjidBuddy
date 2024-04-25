@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   map: {
-    flex: 1, // we had to use css as native wind didnt work with Mapview
+    flex: 1, // we had to use css as native wind didn't work with Mapview
   },
   mapContainer: {
     flex: 1,
@@ -72,6 +72,63 @@ const OpenButton = (selectedMasjidWithDistance: MasjidWithDistance) => {
     </View>
   );
 };
+
+const CustomMapView = function ({
+  userLocation,
+  mapRef,
+  masjidsWithDistance,
+  setSelectedMasjidWithDistance,
+}: {
+  userLocation: any;
+  mapRef: any;
+  masjidsWithDistance: any;
+  setSelectedMasjidWithDistance: any;
+}) {
+  return (
+    <MapView
+      ref={mapRef}
+      onRegionChangeComplete={onRegionChangeComplete}
+      style={styles.map}
+      region={
+        userLocation && userLocation.latitude && userLocation.longitude
+          ? {
+              latitude: userLocation.latitude,
+              longitude: userLocation.longitude,
+              latitudeDelta: 0.015,
+              longitudeDelta: 0.0121,
+            }
+          : {
+              latitude: 19.076,
+              longitude: 72.8777,
+              latitudeDelta: 0.015,
+              longitudeDelta: 0.0121,
+            }
+      }
+    >
+      {masjidsWithDistance &&
+        masjidsWithDistance.map((marker: MasjidWithDistance) => (
+          <Marker
+            key={marker.masjid.id}
+            coordinate={{
+              latitude: marker.masjid.latitude,
+              longitude: marker.masjid.longitude,
+            }}
+            title={marker.masjid.name}
+            onPress={() => setSelectedMasjidWithDistance(marker)}
+          />
+        ))}
+
+      {userLocation && (
+        <Marker
+          coordinate={userLocation}
+          title="Your Location"
+          pinColor="blue"
+        />
+      )}
+    </MapView>
+  );
+};
+
 export const FindMasjid = () => {
   const {
     data: masjidsWithDistance,
@@ -92,50 +149,23 @@ export const FindMasjid = () => {
 
   return (
     <View className="flex-1 bg-gray-100 pb-6">
-      <>{SearchView}</>
+      {SearchView}
 
-      {userLocation && (
-        <View className="flex-1 pb-20 ">
-          <View className="h-3 flex-1">
-            <MapView
-              ref={mapRef}
-              onRegionChangeComplete={onRegionChangeComplete}
-              style={styles.map}
-              region={{
-                latitude: userLocation.latitude,
-                longitude: userLocation.longitude,
-                latitudeDelta: 0.015,
-                longitudeDelta: 0.0121,
-              }}
-            >
-              {masjidsWithDistance &&
-                masjidsWithDistance.map((marker: MasjidWithDistance) => (
-                  <Marker
-                    key={marker.masjid.id}
-                    coordinate={{
-                      latitude: marker.masjid.latitude,
-                      longitude: marker.masjid.longitude,
-                    }}
-                    title={marker.masjid.name}
-                    onPress={() => setSelectedMasjidWithDistance(marker)}
-                  />
-                ))}
-
-              {userLocation && (
-                <Marker
-                  coordinate={userLocation}
-                  title="Your Location"
-                  pinColor="blue"
-                />
-              )}
-            </MapView>
-          </View>
+      <View className="flex-1 pb-20">
+        <View className="h-3 flex-1">
+          <CustomMapView
+            userLocation={userLocation}
+            mapRef={mapRef}
+            masjidsWithDistance={masjidsWithDistance}
+            setSelectedMasjidWithDistance={setSelectedMasjidWithDistance}
+          />
         </View>
-      )}
+      </View>
 
       {selectedMasjidWithDistance && (
         <SelectMasjidView {...selectedMasjidWithDistance} />
       )}
+
       {selectedMasjidWithDistance && (
         <OpenButton {...selectedMasjidWithDistance} />
       )}
