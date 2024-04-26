@@ -141,9 +141,28 @@ export const FindMasjid = () => {
     useState<MasjidWithDistance>();
 
   const { userLocation } = useLocation();
+  const [checkedLocation, setCheckedLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+
+  console.log(checkedLocation);
   const SearchView = useSearch(
     masjidsWithDistance ?? [],
-    setSelectedMasjidWithDistance,
+    (selectedMasjidWithDistance) => {
+      if (
+        selectedMasjidWithDistance &&
+        typeof selectedMasjidWithDistance !== 'function'
+      ) {
+        // Update userLocation to the coordinates of the selected masjid
+        setCheckedLocation({
+          latitude: selectedMasjidWithDistance.masjid.latitude,
+          longitude: selectedMasjidWithDistance.masjid.longitude,
+        });
+        // Set the selected masjid with distance
+        setSelectedMasjidWithDistance(selectedMasjidWithDistance);
+      }
+    },
     (masjidWithDistance) => masjidWithDistance.masjid.name
   );
 
@@ -154,7 +173,7 @@ export const FindMasjid = () => {
       <View className="flex-1 pb-20">
         <View className="h-3 flex-1">
           <CustomMapView
-            userLocation={userLocation}
+            userLocation={checkedLocation ? checkedLocation : userLocation}
             mapRef={mapRef}
             masjidsWithDistance={masjidsWithDistance}
             setSelectedMasjidWithDistance={setSelectedMasjidWithDistance}
