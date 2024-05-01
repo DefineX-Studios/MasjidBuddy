@@ -23,7 +23,7 @@ export const useSearch = <T,>(
 
   const handleItemSelect = (item: T) => {
     setSelectedMasjidWithDistance(item);
-    setSearchQuery(''); // Clear the search query after selecting an item
+    setSearchQuery('');
   };
 
   return (
@@ -34,7 +34,10 @@ export const useSearch = <T,>(
         onChangeText={(text) => setSearchQuery(text)}
         value={searchQuery}
       />
-      <View className="h-20 flex-1">
+      <View
+        style={{ height: '100%', width: '100%' }}
+        className="h-20 flex-1 pb-2 pt-10"
+      >
         <FlashList
           data={searchQuery ? filteredMasjids : []}
           renderItem={({ item }) => (
@@ -42,7 +45,9 @@ export const useSearch = <T,>(
               className="bg-gray-200"
               onPress={() => handleItemSelect(item)}
             >
-              <Text className="bg-green-500">{objToSearchString(item)}</Text>
+              <Text className="scroll-pb-10 bg-green-500 pb-10">
+                {objToSearchString(item)}
+              </Text>
             </TouchableOpacity>
           )}
           keyExtractor={(item) => objToSearchString(item)}
