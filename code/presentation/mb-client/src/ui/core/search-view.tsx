@@ -27,25 +27,29 @@ export const useSearch = <T,>(
   };
 
   return (
-    <View className="flex-1 bg-gray-100 pb-0 pt-20">
+    <View className="flex-1 bg-gray-100 ">
       <TextInput
         className="bg-gray-200"
         placeholder="Search"
         onChangeText={(text) => setSearchQuery(text)}
         value={searchQuery}
       />
-      <View
-        style={{ height: '100%', width: '100%' }}
-        className="h-20 flex-1 pb-2 pt-10"
-      >
+      <View className="h-20 flex-1 pb-2 pt-10">
         <FlashList
           data={searchQuery ? filteredMasjids : []}
           renderItem={({ item }) => (
             <TouchableOpacity
-              className="bg-gray-200"
+              className="h-02 flex-1 bg-gray-200"
               onPress={() => handleItemSelect(item)}
             >
-              <Text className="scroll-pb-10 bg-green-500 pb-10">
+              <Text
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  backgroundColor: 'green',
+                  display: 'flex',
+                }}
+              >
                 {objToSearchString(item)}
               </Text>
             </TouchableOpacity>

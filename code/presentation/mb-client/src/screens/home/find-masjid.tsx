@@ -31,18 +31,18 @@ const onRegionChangeComplete = (region: Region, details: Details) => {
 
 const SelectMasjidView = (selectedMasjidWithDistance: MasjidWithDistance) => {
   return (
-    <View className="border-r-5 border-#ccc mt-10 p-10">
+    <View className=" border-#ccc">
       <View>
-        <Text className="mb-5 bg-green-300">
+        <Text className=" bg-green-300">
           Masjid Name: {selectedMasjidWithDistance.masjid.name}
         </Text>
-        <Text className="mb-5 bg-green-300">
+        <Text className=" bg-green-300">
           Distance: {selectedMasjidWithDistance.distance} km
         </Text>
-        <Text className="mb-5 bg-green-300">
+        <Text className=" bg-green-300">
           Address: {selectedMasjidWithDistance.masjid.address.line1}
         </Text>
-        <Text className="mb-5 bg-green-300">
+        <Text className=" bg-green-300">
           Next-Namaz:{' '}
           {
             getNextNamaz(
@@ -165,13 +165,12 @@ export const FindMasjid = () => {
     },
     (masjidWithDistance) => masjidWithDistance.masjid.name
   );
-
   return (
-    <View className="flex-1 bg-gray-100 pb-6">
-      {SearchView}
+    <View className="flex-1 border bg-gray-100 pt-10">
+      <View className=" w-100 h-100 flex-1 border">{SearchView}</View>
 
-      <View className="flex-1 pb-20">
-        <View className="h-3 flex-1">
+      <View className="pb-03 flex-1">
+        <View className="w-50 h-50  flex-1 border">
           <CustomMapView
             userLocation={checkedLocation ? checkedLocation : userLocation}
             mapRef={mapRef}

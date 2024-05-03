@@ -24,6 +24,7 @@ export const MasjidScreen = () => {
 
   if (!calledGetdbMasjid) {
     getdbMasjid();
+    setCalledGetdbMasjid(true);
   }
 
   if (isLoading) {
