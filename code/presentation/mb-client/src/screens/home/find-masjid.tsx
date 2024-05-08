@@ -73,16 +73,19 @@ const OpenButton = (selectedMasjidWithDistance: MasjidWithDistance) => {
   );
 };
 
+// eslint-disable-next-line max-lines-per-function
 const CustomMapView = function ({
   userLocation,
   mapRef,
   masjidsWithDistance,
   setSelectedMasjidWithDistance,
+  selectedMasjidWithDistance,
 }: {
   userLocation: any;
   mapRef: any;
   masjidsWithDistance: any;
   setSelectedMasjidWithDistance: any;
+  selectedMasjidWithDistance: any;
 }) {
   return (
     <MapView
@@ -90,7 +93,14 @@ const CustomMapView = function ({
       onRegionChangeComplete={onRegionChangeComplete}
       style={styles.map}
       region={
-        userLocation && userLocation.latitude && userLocation.longitude
+        selectedMasjidWithDistance && selectedMasjidWithDistance.masjid
+          ? {
+              latitude: selectedMasjidWithDistance.masjid.latitude,
+              longitude: selectedMasjidWithDistance.masjid.longitude,
+              latitudeDelta: 0.015,
+              longitudeDelta: 0.0121,
+            }
+          : userLocation && userLocation.latitude && userLocation.longitude
           ? {
               latitude: userLocation.latitude,
               longitude: userLocation.longitude,
@@ -105,6 +115,7 @@ const CustomMapView = function ({
             }
       }
     >
+      {/* Markers for masjids */}
       {masjidsWithDistance &&
         masjidsWithDistance.map((marker: MasjidWithDistance) => (
           <Marker
@@ -118,6 +129,19 @@ const CustomMapView = function ({
           />
         ))}
 
+      {/* User location marker */}
+
+      {/* Marker for selected masjid */}
+      {selectedMasjidWithDistance && selectedMasjidWithDistance.masjid && (
+        <Marker
+          coordinate={{
+            latitude: selectedMasjidWithDistance.masjid.latitude,
+            longitude: selectedMasjidWithDistance.masjid.longitude,
+          }}
+          title={selectedMasjidWithDistance.masjid.name}
+          pinColor="orange"
+        />
+      )}
       {userLocation && (
         <Marker
           coordinate={userLocation}
@@ -141,12 +165,9 @@ export const FindMasjid = () => {
     useState<MasjidWithDistance>();
 
   const { userLocation } = useLocation();
-  const [checkedLocation, setCheckedLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
+  const [userLocationOverride, setUserLocationOverride] = useState<any>(null);
 
-  console.log(checkedLocation);
+  console.log(userLocationOverride);
   const SearchView = useSearch(
     masjidsWithDistance ?? [],
     (selectedMasjidWithDistance) => {
@@ -154,8 +175,8 @@ export const FindMasjid = () => {
         selectedMasjidWithDistance &&
         typeof selectedMasjidWithDistance !== 'function'
       ) {
-        // Update userLocation to the coordinates of the selected masjid
-        setCheckedLocation({
+        // Update userLocationOverride to the coordinates of the selected masjid
+        setUserLocationOverride({
           latitude: selectedMasjidWithDistance.masjid.latitude,
           longitude: selectedMasjidWithDistance.masjid.longitude,
         });
@@ -172,10 +193,11 @@ export const FindMasjid = () => {
       <View className="pb-03 flex-1">
         <View className="w-50 h-50  flex-1 border">
           <CustomMapView
-            userLocation={checkedLocation ? checkedLocation : userLocation}
+            userLocation={userLocation}
             mapRef={mapRef}
             masjidsWithDistance={masjidsWithDistance}
             setSelectedMasjidWithDistance={setSelectedMasjidWithDistance}
+            selectedMasjidWithDistance={selectedMasjidWithDistance}
           />
         </View>
       </View>
