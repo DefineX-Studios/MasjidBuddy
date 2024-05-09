@@ -93,14 +93,14 @@ const CustomMapView = function ({
       onRegionChangeComplete={onRegionChangeComplete}
       style={styles.map}
       region={
-        selectedMasjidWithDistance && selectedMasjidWithDistance.masjid
+        selectedMasjidWithDistance
           ? {
               latitude: selectedMasjidWithDistance.masjid.latitude,
               longitude: selectedMasjidWithDistance.masjid.longitude,
               latitudeDelta: 0.015,
               longitudeDelta: 0.0121,
             }
-          : userLocation && userLocation.latitude && userLocation.longitude
+          : userLocation
           ? {
               latitude: userLocation.latitude,
               longitude: userLocation.longitude,
