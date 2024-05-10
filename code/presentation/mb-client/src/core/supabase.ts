@@ -17,7 +17,7 @@ export const login = async (
     token: idToken,
   });
 
-  if(!data.session) return null;
+  if (!data.session) return null;
 
   return {
     access: data.session.access_token,
@@ -25,45 +25,88 @@ export const login = async (
     type: provider,
   };
 };
+export const fetchMasjidDetails = async (selectedMasjidId: number) => {
+  try {
+    const { data: masjidDetails, error: masjidError } = await supabase
+      .from('masjid')
+      .select('*')
+      .eq('id', selectedMasjidId);
 
+    if (masjidError) {
+      throw new Error('Error fetching masjid details');
+    }
+
+    if (!masjidDetails || masjidDetails.length === 0) {
+      throw new Error('Masjid details not found');
+    }
+
+    return masjidDetails[0];
+  } catch (error) {
+    throw new Error('Error fetching masjid details');
+  }
+};
+
+export const fetchNamazTimings = async (selectedMasjidId: number) => {
+  try {
+    const { data, error } = await supabase
+      .from('namaz_timing')
+      .select('*')
+      .eq('masjid_id', selectedMasjidId);
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  } catch (error) {
+    throw new Error('Error fetching namaz timings');
+  }
+};
 
 export const setSession = async (token: TokenType) => {
-  const { data, error } = await supabase.auth.setSession({
+  const { data, error: _ } = await supabase.auth.setSession({
     access_token: token.access,
-    refresh_token: token.refresh
+    refresh_token: token.refresh,
   });
 
-  if(!data.session) return null;
+  if (!data.session) return null;
 
   return {
     access: data.session.access_token,
     refresh: data.session.refresh_token,
     type: token.type,
   };
-}
+};
 
 export const masjid = {
-  async getAll(){
-    return await supabase.rpc(
-      'get_masjids_with_namaz_timings' 
-    );
+  async getAll() {
+    return await supabase.rpc('get_masjids_with_namaz_timings');
   },
 
-  async getSubscribed(){
-    return await supabase.rpc(
-      'get_subscribed_masjids'
-    )
+  async getSubscribed() {
+    return await supabase.rpc('get_subscribed_masjids');
   },
 
-  async subscribe(masjid_id: number){
-    return await supabase.rpc(
-      'subscribe_to_masjid', {masjid_id}
-    )
+  async subscribe(masjid_id: number) {
+    return await supabase
+      .from('user_masjid_subscription')
+      .insert([{ masjid_id: masjid_id }])
+      .select();
   },
 
-  async unsubscribe(masjid_id: number){
-    return await supabase.rpc(
-      'unsubscribe_from_masjid', {masjid_id}
-    )
-  }
-}
+  async unsubscribe(masjid_id: number) {
+    return await supabase
+      .from('user_masjid_subscription')
+      .delete()
+      .eq('masjid_id', masjid_id);
+  },
+  async isSubscribed(masjid_id: number) {
+    const subscribedMasjid = await supabase
+      .from('user_masjid_subscription')
+      .select('*')
+      .eq('masjid_id', masjid_id)
+      .single(); // Use single() to ensure only one result is returned
+
+    return subscribedMasjid !== null; // Return true if a masjid is found, false otherwise
+  },
+};
