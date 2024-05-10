@@ -1,5 +1,5 @@
 export type Masjid = {
-  id: number;
+  id: string;
   name: string;
   address: Address;
   mobile_no: string;

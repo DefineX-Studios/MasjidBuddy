@@ -75,7 +75,7 @@ const client = z.object({
 
   // ADD YOUR CLIENT ENV VARS HERE
   API_URL: z.string(),
-  API_KEY: z.string(),
+
   SUPABASE_URL: z.string(),
   SUPABASE_KEY: z.string(),
 
@@ -101,7 +101,7 @@ const _clientEnv = {
 
   // ADD YOUR ENV VARS HERE TOO
   API_URL: process.env.API_URL,
-  API_KEY: process.env.API_KEY,
+
   SUPABASE_URL: process.env.SUPABASE_URL,
   SUPABASE_KEY: process.env.SUPABASE_KEY,
 
