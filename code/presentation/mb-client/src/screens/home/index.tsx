@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import { FlashList } from '@shopify/flash-list';
 import React, { useState } from 'react';
 
 import { useMasjids } from '@/api/masjid/use-masjids';
@@ -19,58 +18,67 @@ const HomeScreenContent = ({
   filteredMasjids,
   isLoading,
   navigate,
-  renderItem,
+  currentIndex,
+  handleNext,
 }: {
   filteredMasjids: any;
   isLoading: boolean;
   navigate: any;
-  renderItem: any;
+
+  currentIndex: number;
+  handleNext: () => void;
 }) => (
-  <View style={{ flex: 1 }}>
+  <View className="mb-20 flex-1">
     <FocusAwareStatusBar />
-    <FlashList
-      data={filteredMasjids}
-      renderItem={renderItem}
-      numColumns={2}
-      keyExtractor={(_, index) => `item-${index}`}
-      ListEmptyComponent={<EmptyList isLoading={isLoading} />}
-      estimatedItemSize={20}
-    />
+    {filteredMasjids && filteredMasjids.length > 0 ? (
+      <>
+        <MasjidCard
+          {...filteredMasjids[currentIndex]}
+          onPress={() =>
+            navigate('MasjidScreen', {
+              selectedMasjidId: filteredMasjids[currentIndex].masjid.id,
+            })
+          }
+        />
+        <Pressable className="self-center bg-gray-200 p-4" onPress={handleNext}>
+          <Text>Next</Text>
+        </Pressable>
+      </>
+    ) : (
+      <EmptyList isLoading={isLoading} />
+    )}
     <Pressable
-      style={{ backgroundColor: '#f0f0f0', padding: 10 }}
+      className="mt-80 bg-gray-200 p-4"
       onPress={() => navigate('FindMasjid')}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View className="flex-row ">
         <Search />
-        <Text style={{ flex: 1, textAlign: 'center' }}>
-          FIND NEARBY MASJIDS
-        </Text>
+        <Text className="flex-1 ">FIND NEARBY MASJIDS</Text>
       </View>
     </Pressable>
   </View>
 );
 
 export const HomeScreen = () => {
-  const { navigate } = useNavigation(); // Correct usage of useNavigation hook
-  const [subscribedMasjids, setSubscribedMasjids] = useState<any[]>([]); // Adjust the type as needed
+  const { navigate } = useNavigation();
+  const [subscribedMasjids, setSubscribedMasjids] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
   const [isSubscribedFetched, setIsSubscribedFetched] =
     useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const result = useMasjids();
   const { data, isLoading: masjidIsLoading, isError: masjidIsError } = result;
 
-  // Function to fetch subscribed masjids
   const fetchSubscribedMasjids = async () => {
     try {
       const response = await masjid.getSubscribed();
       if (response.error) {
         throw new Error(response.error.message);
       }
-      const subscribed = response.data; // Adjust the property access based on the actual response structure
+      const subscribed = response.data;
       setSubscribedMasjids(subscribed);
-      console.log(subscribed);
       setIsLoading(false);
       setIsSubscribedFetched(true);
     } catch (error) {
@@ -80,23 +88,10 @@ export const HomeScreen = () => {
     }
   };
 
-  const renderItem = (
-    { item }: { item: any } // Adjust the type as needed
-  ) => (
-    <MasjidCard
-      {...item}
-      onPress={() => {
-        const selectedMasjidId = item.masjid.id;
-        navigate('MasjidScreen', { selectedMasjidId });
-      }} // Adjust the property access based on the actual item structure
-    />
-  );
-  // Fetch subscribed masjids only once when the component mounts
   if (!isSubscribedFetched) {
     fetchSubscribedMasjids();
   }
 
-  // Handle errors
   if (isError || (!masjidIsLoading && data == null) || masjidIsError) {
     return (
       <View>
@@ -111,12 +106,19 @@ export const HomeScreen = () => {
     )
   );
 
+  const handleNext = () => {
+    setCurrentIndex(
+      (prevIndex) => (prevIndex + 1) % (filteredMasjids?.length ?? 0)
+    );
+  };
+
   return (
     <HomeScreenContent
       filteredMasjids={filteredMasjids}
       isLoading={isLoading}
       navigate={navigate}
-      renderItem={renderItem}
+      currentIndex={currentIndex}
+      handleNext={handleNext}
     />
   );
 };
