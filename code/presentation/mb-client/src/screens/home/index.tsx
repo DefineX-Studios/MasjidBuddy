@@ -13,6 +13,7 @@ import {
 } from '@/ui';
 
 import { MasjidCard } from './masjid';
+import  Icon  from 'react-native-vector-icons/MaterialIcons';
 
 const HomeScreenContent = ({
   filteredMasjids,
@@ -32,6 +33,9 @@ const HomeScreenContent = ({
     <FocusAwareStatusBar />
     {filteredMasjids && filteredMasjids.length > 0 ? (
       <>
+        <Pressable className="self-center bg-gray-200 p-4" onPress={handleNext}>
+          <Icon name="arrow-forward" size={20} color="red"/>
+        </Pressable>
         <MasjidCard
           {...filteredMasjids[currentIndex]}
           onPress={() =>
@@ -40,9 +44,6 @@ const HomeScreenContent = ({
             })
           }
         />
-        <Pressable className="self-center bg-gray-200 p-4" onPress={handleNext}>
-          <Text>Next</Text>
-        </Pressable>
       </>
     ) : (
       <EmptyList isLoading={isLoading} />
