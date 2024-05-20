@@ -135,6 +135,7 @@ export const MasjidScreen = () => {
         <Text className="flex-1 text-center">Video Offline</Text>
       </Pressable>
 
+<<<<<<< Updated upstream
       {isSubscribed ? (
         <Pressable
           onPress={handleSubscribe}
@@ -142,6 +143,26 @@ export const MasjidScreen = () => {
         >
           <Text className="flex-1 text-center">UnSubscribe</Text>
         </Pressable>
+=======
+      {isSubscriptionLoaded ? (
+        isSubscribed ? (
+          <Pressable
+            onPress={handleSubscribe}
+            className="mt-23 mb-0 flex flex-row items-center bg-gray-200 p-3"
+          >
+            <Text className="flex-1 text-center  text-green-700">
+              UnSubscribe
+            </Text>
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={handleSubscribe}
+            className="flex flex-row items-center bg-red-500 p-4"
+          >
+            <Text className="flex-1 text-center">Subscribe</Text>
+          </Pressable>
+        )
+>>>>>>> Stashed changes
       ) : (
         <Pressable
           onPress={handleSubscribe}
