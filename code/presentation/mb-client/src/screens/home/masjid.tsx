@@ -38,14 +38,14 @@ export const MasjidCard = ({ distance, masjid, onPress = () => {} }: Props) => {
         {/* Display Namaz Timings */}
         <View>
           {Object.entries(masjid.namaz_timings).map(([namaz, time]) => (
-            <View key={namaz} className="flex-row items-center px-4 my-1">
+            <View key={namaz} className="my-1 flex-row items-center px-4">
               <Text variant="xxs" className="flex-1 text-left">
                 {namaz}:
               </Text>
               <Text variant="xxs" className="flex-1 text-center">
                 {convertTimeToAMPM(time)}
               </Text>
-              <Pressable className='flex-1 m1-auto '>
+              <Pressable className="m1-auto flex-1 ">
                 <Icon name="notifications" size={20} color="white" />
               </Pressable>
             </View>
@@ -56,7 +56,6 @@ export const MasjidCard = ({ distance, masjid, onPress = () => {} }: Props) => {
           Within {distance.toFixed(2)}km
         </Text>
       </View>
-
       <View>
         <Text variant="xs" className="pt-1 text-center" />
       </View>
