@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { useMasjids } from '@/api/masjid/use-masjids';
 import { masjid } from '@/core/supabase';
@@ -13,7 +14,6 @@ import {
 } from '@/ui';
 
 import { MasjidCard } from './masjid';
-import  Icon  from 'react-native-vector-icons/MaterialIcons';
 
 const HomeScreenContent = ({
   filteredMasjids,
@@ -34,7 +34,7 @@ const HomeScreenContent = ({
     {filteredMasjids && filteredMasjids.length > 0 ? (
       <>
         <Pressable className="self-center bg-gray-200 p-4" onPress={handleNext}>
-          <Icon name="arrow-forward" size={20} color="red"/>
+          <Icon name="arrow-forward" size={20} color="red" />
         </Pressable>
         <MasjidCard
           {...filteredMasjids[currentIndex]}
@@ -49,7 +49,7 @@ const HomeScreenContent = ({
       <EmptyList isLoading={isLoading} />
     )}
     <Pressable
-      className="mt-80 bg-gray-200 p-4"
+      className="mt-40 bg-gray-200 p-4"
       onPress={() => navigate('FindMasjid')}
     >
       <View className="flex-row ">
