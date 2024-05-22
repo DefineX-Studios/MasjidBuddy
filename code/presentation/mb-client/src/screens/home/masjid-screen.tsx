@@ -7,24 +7,28 @@ import { getNextNamaz } from '@/api/masjid/util';
 import { masjid } from '@/core/supabase';
 import type { RouteProp } from '@/navigation/types';
 import { Pressable, Text, View } from '@/ui';
+
 export const MasjidScreen = () => {
   const { data: masjidsWithDistance, isLoading, isError } = useMasjids();
   const { params } = useRoute<RouteProp<'MasjidScreen'>>();
   const selectedMasjidId = params.selectedMasjidId;
   const { navigate } = useNavigation();
 
-  const [isSubscribed, setSubscribed] = useState(false);
   const [calledGetdbMasjid, setCalledGetdbMasjid] = useState(false);
-  const getdbMasjid = async () => {
-    const dbMasjidValue = await masjid.isSubscribed(selectedMasjidId);
+  const [isSubscribed, setSubscribed] = useState(false); // Initialize with a boolean
+  const [isSubscriptionLoaded, setSubscriptionLoaded] = useState(false); // New state to track loading
 
-    setSubscribed(dbMasjidValue); // Update isSubscribed state
+  const getdbMasjid = async () => {
+    console.log(selectedMasjidId);
+    const dbMasjidValue = await masjid.isSubscribed(selectedMasjidId);
+    setSubscribed(dbMasjidValue);
+    console.log('Our masjid is ' + dbMasjidValue);
+    setSubscriptionLoaded(true); // Set loading state to true after fetching the subscription status
     setCalledGetdbMasjid(true);
   };
 
   if (!calledGetdbMasjid) {
     getdbMasjid();
-    setCalledGetdbMasjid(true);
   }
 
   if (isLoading) {
@@ -44,7 +48,6 @@ export const MasjidScreen = () => {
   }
 
   const selectedMasjid = masjidsWithDistance.find(
-    // eslint-disable-next-line @typescript-eslint/no-shadow
     (masjid) => masjid.masjid.id === selectedMasjidId
   );
 
@@ -61,21 +64,17 @@ export const MasjidScreen = () => {
     selectedMasjid.masjid.namaz_timings
   );
 
-  // Navigation function for subscribing
   const handleSubscribe = async () => {
     try {
       if (isSubscribed) {
         await masjid.unsubscribe(selectedMasjidId);
         console.log(`You unsubscribed from ${selectedMasjidId}`);
       } else {
-        // Make the API request to subscribe
         const response = await masjid.subscribe(selectedMasjidId);
         console.log(response);
-        // If the request succeeds, update the client state
       }
-      setSubscribed(!isSubscribed);
+      setSubscribed((prevSubscribed) => !prevSubscribed); // Use a function to update based on the previous state
     } catch (error) {
-      // If the request fails, handle the error
       console.error('Error subscribing:', error);
     }
   };
@@ -95,9 +94,6 @@ export const MasjidScreen = () => {
         Namaz Time: {nextNamaz.time}
       </Text>
 
-      {/* Conditional rendering for the subscription button */}
-
-      {/* Other navigation buttons */}
       <Pressable
         className="mb-6 flex flex-row items-center bg-green-500 p-3"
         onPress={() => {
@@ -135,20 +131,28 @@ export const MasjidScreen = () => {
         <Text className="flex-1 text-center">Video Offline</Text>
       </Pressable>
 
-      {isSubscribed ? (
-        <Pressable
-          onPress={handleSubscribe}
-          className="mt-23 mb-0 flex flex-row items-center bg-black p-3"
-        >
-          <Text className="flex-1 text-center">UnSubscribe</Text>
-        </Pressable>
+      {isSubscriptionLoaded ? (
+        isSubscribed ? (
+          <Pressable
+            onPress={handleSubscribe}
+            className="mt-23 mb-0 flex flex-row items-center bg-white p-3"
+          >
+            <Text className="flex-1 text-center  text-green-700">
+              UnSubscribe
+            </Text>
+          </Pressable>
+        ) : (
+          <Pressable
+            onPress={handleSubscribe}
+            className="flex flex-row items-center bg-red-500 p-4"
+          >
+            <Text className="flex-1 text-center">Subscribe</Text>
+          </Pressable>
+        )
       ) : (
-        <Pressable
-          onPress={handleSubscribe}
-          className="flex flex-row items-center bg-red-500 p-4"
-        >
-          <Text className="flex-1 text-center">Subscribe</Text>
-        </Pressable>
+        <Text className="mb-4 text-lg font-bold text-green-500">
+          Checking subscription status...
+        </Text>
       )}
     </View>
   );

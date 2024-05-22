@@ -1,5 +1,7 @@
+/* eslint-disable max-lines-per-function */
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { useMasjids } from '@/api/masjid/use-masjids';
 import { masjid } from '@/core/supabase';
@@ -13,7 +15,6 @@ import {
 } from '@/ui';
 
 import { MasjidCard } from './masjid';
-import  Icon  from 'react-native-vector-icons/MaterialIcons';
 
 const HomeScreenContent = ({
   filteredMasjids,
@@ -21,21 +22,46 @@ const HomeScreenContent = ({
   navigate,
   currentIndex,
   handleNext,
+  handlePrevious,
 }: {
   filteredMasjids: any;
   isLoading: boolean;
   navigate: any;
-
   currentIndex: number;
   handleNext: () => void;
+  handlePrevious: any;
 }) => (
   <View className="mb-20 flex-1">
     <FocusAwareStatusBar />
     {filteredMasjids && filteredMasjids.length > 0 ? (
       <>
-        <Pressable className="self-center bg-gray-200 p-4" onPress={handleNext}>
-          <Icon name="arrow-forward" size={20} color="red"/>
-        </Pressable>
+        <View className="flex-row items-center justify-between">
+          <Pressable
+            className="self-start bg-white p-4"
+            onPress={() =>
+              navigate('MasjidInfo', {
+                selectedMasjidId: filteredMasjids[currentIndex].masjid.id,
+              })
+            }
+          >
+            <Icon name="info" size={20} color="red" />
+          </Pressable>
+          <Pressable
+            className="self-center bg-gray-200 p-2"
+            onPress={handlePrevious}
+          >
+            <Icon name="chevron-left" size={20} color="red" />
+          </Pressable>
+          <Pressable
+            className="self-center bg-gray-200 p-2"
+            onPress={handleNext}
+          >
+            <Icon name="chevron-right" size={20} color="red" />
+          </Pressable>
+          <Pressable className="self-end bg-white p-4" onPress={handleNext}>
+            <Icon name="edit" size={20} color="red" />
+          </Pressable>
+        </View>
         <MasjidCard
           {...filteredMasjids[currentIndex]}
           onPress={() =>
@@ -48,15 +74,17 @@ const HomeScreenContent = ({
     ) : (
       <EmptyList isLoading={isLoading} />
     )}
-    <Pressable
-      className="mt-80 bg-gray-200 p-4"
-      onPress={() => navigate('FindMasjid')}
-    >
-      <View className="flex-row ">
-        <Search />
-        <Text className="flex-1 ">FIND NEARBY MASJIDS</Text>
-      </View>
-    </Pressable>
+    <View>
+      <Pressable
+        className="mt-40 bg-gray-200 p-3 "
+        onPress={() => navigate('FindMasjid')}
+      >
+        <View className="flex-row self-end">
+          <Search />
+          <Text className="p-l-10 flex-1">FIND NEARBY MASJIDS</Text>
+        </View>
+      </Pressable>
+    </View>
   </View>
 );
 
@@ -68,7 +96,6 @@ export const HomeScreen = () => {
   const [isSubscribedFetched, setIsSubscribedFetched] =
     useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
   const result = useMasjids();
   const { data, isLoading: masjidIsLoading, isError: masjidIsError } = result;
 
@@ -112,6 +139,13 @@ export const HomeScreen = () => {
       (prevIndex) => (prevIndex + 1) % (filteredMasjids?.length ?? 0)
     );
   };
+  const handlePrevious = () => {
+    setCurrentIndex(
+      (prevIndex) =>
+        (prevIndex - 1 + (filteredMasjids?.length ?? 0)) %
+        (filteredMasjids?.length ?? 0)
+    );
+  };
 
   return (
     <HomeScreenContent
@@ -120,6 +154,7 @@ export const HomeScreen = () => {
       navigate={navigate}
       currentIndex={currentIndex}
       handleNext={handleNext}
+      handlePrevious={handlePrevious}
     />
   );
 };
