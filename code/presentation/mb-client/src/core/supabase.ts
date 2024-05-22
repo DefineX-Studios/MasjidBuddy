@@ -100,13 +100,17 @@ export const masjid = {
       .delete()
       .eq('masjid_id', masjid_id);
   },
-  async isSubscribed(masjid_id: number) {
-    const subscribedMasjid = await supabase
+  async isSubscribed(masjid_id: number): Promise<boolean> {
+    const { data, error } = await supabase
       .from('user_masjid_subscription')
       .select('*')
       .eq('masjid_id', masjid_id)
       .single(); // Use single() to ensure only one result is returned
 
-    return subscribedMasjid !== null; // Return true if a masjid is found, false otherwise
+    if (error) {
+      return false;
+    }
+
+    return data !== null; // Return true if a masjid is found, false otherwise
   },
 };
