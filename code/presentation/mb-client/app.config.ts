@@ -33,6 +33,11 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: '#2E3C4B',
     },
     package: Env.PACKAGE,
+    config: {
+      googleMaps: {
+        apiKey: Env.API_KEY,
+      },
+    },
   },
   web: {
     favicon: './assets/favicon.png',
@@ -46,6 +51,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         android: {
           kotlinVersion: '1.7.22', // this is for softinput package
         },
+      },
+    ],
+    [
+      'expo-location',
+      {
+        locationAlwaysAndWhenInUsePermission:
+          'Allow MasjidBuddy to use your location.',
       },
     ],
     [
