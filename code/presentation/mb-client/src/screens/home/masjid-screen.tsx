@@ -135,9 +135,11 @@ export const MasjidScreen = () => {
         isSubscribed ? (
           <Pressable
             onPress={handleSubscribe}
-            className="mt-23 mb-0 flex flex-row items-center bg-black p-3"
+            className="mt-23 mb-0 flex flex-row items-center bg-white p-3"
           >
-            <Text className="flex-1 text-center">UnSubscribe</Text>
+            <Text className="flex-1 text-center  text-green-700">
+              UnSubscribe
+            </Text>
           </Pressable>
         ) : (
           <Pressable
