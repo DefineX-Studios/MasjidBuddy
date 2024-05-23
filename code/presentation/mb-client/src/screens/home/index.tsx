@@ -58,7 +58,14 @@ const HomeScreenContent = ({
           >
             <Icon name="chevron-right" size={20} color="red" />
           </Pressable>
-          <Pressable className="self-end bg-white p-4" onPress={handleNext}>
+          <Pressable
+            className="self-end bg-white p-4"
+            onPress={() =>
+              navigate('MasjidInfo', {
+                selectedMasjidId: filteredMasjids[currentIndex].masjid.id,
+              })
+            }
+          >
             <Icon name="edit" size={20} color="red" />
           </Pressable>
         </View>
