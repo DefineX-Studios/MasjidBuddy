@@ -61,7 +61,7 @@ const HomeScreenContent = ({
           <Pressable
             className="self-end bg-white p-4"
             onPress={() =>
-              navigate('MasjidInfo', {
+              navigate('SubscriptionScreen', {
                 selectedMasjidId: filteredMasjids[currentIndex].masjid.id,
               })
             }

@@ -8,8 +8,8 @@ import { FindMasjid } from '@/screens/home/find-masjid';
 import { MasjidInfo } from '@/screens/home/masjid-info';
 import { MasjidScreen } from '@/screens/home/masjid-screen';
 import { NamazTimingsScreen } from '@/screens/home/namaz-timings';
+import { SubscriptionScreen } from '@/screens/home/subscriptions';
 import { VideoScreen } from '@/screens/home/video-screen';
-
 export type HomeStackParamList = {
   HomeScreen: undefined;
   FindMasjid: undefined;
@@ -19,6 +19,7 @@ export type HomeStackParamList = {
   VideoScreen: undefined;
   MasjidInfo: { selectedMasjidId: number };
   FindMasjidFirstTime: undefined;
+  SubscriptionScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<HomeStackParamList>();
@@ -66,6 +67,7 @@ export const HomeNavigator = () => {
       <Stack.Screen name="VideoScreen" component={VideoScreen} />
       <Stack.Screen name="MasjidInfo" component={MasjidInfo} />
       <Stack.Screen name="FindMasjid" component={FindMasjid} />
+      <Stack.Screen name="SubscriptionScreen" component={SubscriptionScreen} />
     </Stack.Navigator>
   );
 };
