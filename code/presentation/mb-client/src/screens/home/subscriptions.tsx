@@ -13,7 +13,7 @@ import {
   View,
 } from '@/ui';
 
-import { MasjidCard } from './masjid';
+import { MasjidCard } from './masjidforsubscription';
 
 const HomeScreenContent = ({
   filteredMasjids,
