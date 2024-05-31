@@ -21,7 +21,7 @@ export const Settings = () => {
       <ScrollView>
         <View className="flex-1 px-4 pt-16 ">
           <View>
-            <ItemsContainer title="settings.generale">
+            <ItemsContainer>
               <Item text={t('Sign in')} onPress={() => navigate('Login')} />
             </ItemsContainer>
           </View>
