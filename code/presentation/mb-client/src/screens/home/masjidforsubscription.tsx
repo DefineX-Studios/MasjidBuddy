@@ -1,25 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import type { MasjidWithDistance } from '@/api/masjid';
 import { convertTimeToAMPM, getNextNamaz } from '@/api/masjid/util';
 import { masjid as mymasjid } from '@/core/supabase';
-import {} from '@/core/supabase';
 import { Pressable, Text, View } from '@/ui';
+
 type Props = MasjidWithDistance & { onPress?: () => void };
 
 export const MasjidCard = ({ distance, masjid }: Props) => {
+  const [subscribed, setSubscribed] = useState(true); // Add state to manage subscription
   const currentTime = new Date().toLocaleTimeString();
   const nextNamaz = getNextNamaz(currentTime, masjid.namaz_timings);
 
+  const handleUnsubscribe = () => {
+    mymasjid.unsubscribe(masjid.id);
+    setSubscribed(false); // Update state to trigger re-render
+    console.log('unsubscribed');
+  };
+
+  if (!subscribed) {
+    return null; // Optionally, you can return null or show some other UI when unsubscribed
+  }
+
   return (
     <View className="m-2 block w-11/12 overflow-hidden rounded-xl bg-neutral-200 p-2 shadow-xl dark:bg-charcoal-900">
-      <Pressable
-        onPress={() => {
-          mymasjid.unsubscribe(masjid.id);
-          console.log('unsubscribed');
-        }}
-      >
+      <Pressable onPress={handleUnsubscribe}>
         <Icon name="close" size={20} color="red" />
       </Pressable>
       <View>

@@ -6,7 +6,7 @@ import * as React from 'react';
 import type { SvgProps } from 'react-native-svg';
 
 import { entries } from '@/core';
-import { Settings, Style } from '@/screens';
+import { Style } from '@/screens';
 import {
   colors,
   Feed as FeedIcon,
@@ -17,6 +17,7 @@ import {
 
 import { FeedNavigator } from './feed-navigator';
 import { HomeNavigator } from './home-navigator';
+import { SettingsNavigator } from './settings-navigator';
 
 const TabsInfo = {
   HomeNavigator: {
@@ -35,7 +36,7 @@ const TabsInfo = {
     icon: (props: SvgProps) => <FeedIcon {...props} />,
   },
   Settings: {
-    component: Settings,
+    component: SettingsNavigator,
     label: 'Settings',
     icon: (props: SvgProps) => <SettingsIcon {...props} />,
   },
