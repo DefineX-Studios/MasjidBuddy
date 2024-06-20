@@ -2,11 +2,14 @@ import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import React from 'react';
 
 import { signIn } from '@/core';
+import {facebookAuthMethod} from '@/core/auth/facebook-signin';
 import { googleAuthMethod } from '@/core/auth/google-signin';
-import { FocusAwareStatusBar } from '@/ui';
+import { Button, FocusAwareStatusBar } from '@/ui';
 
 export const Login = () => {
   googleAuthMethod.initialize();
+  facebookAuthMethod.initialize();
+
   return (
     <>
       <FocusAwareStatusBar />
@@ -15,6 +18,8 @@ export const Login = () => {
         color={GoogleSigninButton.Color.Dark}
         onPress={() => signIn('google')}
       />
+      <Button label ="Facebook"onPress={() => signIn('facebook')}  />
+     
     </>
   );
 };

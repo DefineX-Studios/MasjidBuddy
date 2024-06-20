@@ -4,9 +4,6 @@ import * as supabase from '../supabase';
 import { createSelectors } from '../utils';
 import type { TokenType } from './utils';
 import { AuthMethods, getToken, removeToken, setToken } from './utils';
-import { hydrate } from '@tanstack/react-query';
-import { get } from 'react-hook-form';
-import { set } from 'zod';
 
 interface AuthState {
   token: TokenType | null;
@@ -23,22 +20,23 @@ const _useAuth = create<AuthState>((set, get) => ({
   status: 'idle',
   token: null,
 
-  _setAndStore(token: TokenType){
+  _setAndStore(token: TokenType) {
     setToken(token);
-    set({status: 'signIn', token});
+    set({ status: 'signIn', token });
   },
 
   async signIn(type: keyof typeof AuthMethods) {
     const method = AuthMethods[type];
-  
+
     if (!method) return;
-  
+
     const idToken = await method.signIn();
+    console.log(idToken);
     if (!idToken) return;
-  
+
     const token = await supabase.login(idToken, type);
     if (!token) return;
-
+    console.log(token);
     this._setAndStore(token);
   },
   signOut: () => {
@@ -64,12 +62,11 @@ const _useAuth = create<AuthState>((set, get) => ({
   async hydrate() {
     try {
       const token = getToken();
-      
+
       if (token !== null) {
-        
         const newToken = await supabase.setSession(token);
-        if(newToken == null){
-          console.error("unable to re authenticate, logging out...")
+        if (newToken == null) {
+          console.error('unable to re authenticate, logging out...');
           get().signOut();
           return;
         }
@@ -89,4 +86,5 @@ export const useAuth = createSelectors(_useAuth);
 
 export const signOut = () => _useAuth.getState().signOut();
 export const hydrateAuth = () => _useAuth.getState().hydrate();
-export const signIn = (type: keyof typeof AuthMethods) => _useAuth.getState().signIn(type);
+export const signIn = (type: keyof typeof AuthMethods) =>
+  _useAuth.getState().signIn(type);

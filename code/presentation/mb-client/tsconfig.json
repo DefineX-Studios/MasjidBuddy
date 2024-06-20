@@ -3,9 +3,12 @@
   "compilerOptions": {
     "strict": true,
     "baseUrl": ".",
+    "typeRoots": ["./src/types", "./types"],
     "paths": {
       "@/*": ["./src/*"],
-      "@env": ["./src/core/env.js"]
+      "@env": ["./src/core/env.js"],
+      "*": ["node_modules/*"],
+      "@react-native-fbsdk-next": ["types/react-native-fbsdk-next.d.ts"]
     },
     "esModuleInterop": true,
     "checkJs": true

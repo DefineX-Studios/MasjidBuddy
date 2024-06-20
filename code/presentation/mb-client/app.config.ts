@@ -78,6 +78,20 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         ],
       },
     ],
+    [
+      'react-native-fbsdk-next',
+      {
+        appID: '471978288574638',
+        clientToken: 'f458d620e22e95dc0d7505612e106761',
+        displayName: 'MasjidBuddy',
+        scheme: 'fb6471978288574638',
+        advertiserIDCollectionEnabled: false,
+        autoLogAppEventsEnabled: false,
+        isAutoInitEnabled: true,
+        iosUserTrackingPermission:
+          'This identifier will be used to deliver personalized ads to you.',
+      },
+    ],
   ],
   extra: {
     ...ClientEnv,

@@ -1,12 +1,15 @@
+// src/core/auth/utils.ts
 import { getItem, removeItem, setItem } from '@/core/storage';
 
 import { googleAuthMethod } from './google-signin';
+import { facebookAuthMethod } from './facebook-signin';
 
 const TOKEN = 'token';
 
 // key should match provider parameter required by supabase
 export const AuthMethods = {
   google: googleAuthMethod,
+  facebook:facebookAuthMethod,
 };
 
 export type AuthMethod = {
@@ -19,7 +22,7 @@ export type AuthMethod = {
 export type TokenType = {
   access: string;
   refresh: string;
-  type: keyof typeof AuthMethods;
+  type: 'google' | 'facebook';
 };
 
 //todo this is pretty unreadable, u dont get any idea that this is only saving in storage
