@@ -72,7 +72,7 @@ const HomeScreenContent = ({
         <MasjidCard
           {...filteredMasjids[currentIndex]}
           onPress={() =>
-            navigate('MasjidScreen', {
+            navigate('MasjidInfoScreen', {
               selectedMasjidId: filteredMasjids[currentIndex].masjid.id,
             })
           }

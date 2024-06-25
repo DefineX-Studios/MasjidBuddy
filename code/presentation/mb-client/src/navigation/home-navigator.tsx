@@ -5,19 +5,19 @@ import { masjid } from '@/core/supabase'; // Import supabase instance
 import { HomeScreen } from '@/screens/home';
 import { AudioScreen } from '@/screens/home/audio-screen';
 import { FindMasjid } from '@/screens/home/find-masjid';
-import { MasjidInfo } from '@/screens/home/masjid-info';
-import { MasjidScreen } from '@/screens/home/masjid-screen';
+
+import { MasjidInfoScreen } from '@/screens/home/masjid-screen';
 import { NamazTimingsScreen } from '@/screens/home/namaz-timings';
 import { SubscriptionScreen } from '@/screens/home/subscriptions';
 import { VideoScreen } from '@/screens/home/video-screen';
 export type HomeStackParamList = {
   HomeScreen: undefined;
   FindMasjid: undefined;
-  MasjidScreen: { selectedMasjidId: number };
+  MasjidInfoScreen: { selectedMasjidId: number };
   NamazTimingsScreen: { selectedMasjidId: number };
   AudioScreen: undefined;
   VideoScreen: undefined;
-  MasjidInfo: { selectedMasjidId: number };
+
   FindMasjidFirstTime: undefined;
   SubscriptionScreen: undefined;
 };
@@ -61,11 +61,11 @@ export const HomeNavigator = () => {
       ) : (
         <Stack.Screen name="FindMasjidFirstTime" component={FindMasjid} />
       )}
-      <Stack.Screen name="MasjidScreen" component={MasjidScreen} />
+      <Stack.Screen name="MasjidInfoScreen" component={MasjidInfoScreen} />
       <Stack.Screen name="NamazTimingsScreen" component={NamazTimingsScreen} />
       <Stack.Screen name="AudioScreen" component={AudioScreen} />
       <Stack.Screen name="VideoScreen" component={VideoScreen} />
-      <Stack.Screen name="MasjidInfo" component={MasjidInfo} />
+      
       <Stack.Screen name="FindMasjid" component={FindMasjid} />
       <Stack.Screen name="SubscriptionScreen" component={SubscriptionScreen} />
     </Stack.Navigator>
