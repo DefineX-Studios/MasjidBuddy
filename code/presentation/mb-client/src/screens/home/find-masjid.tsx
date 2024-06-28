@@ -64,7 +64,7 @@ const OpenButton = (selectedMasjidWithDistance: MasjidWithDistance) => {
         title="Open"
         onPress={() => {
           if (!selectedMasjidWithDistance) return;
-          navigate('MasjidScreen', {
+          navigate('MasjidInfoScreen', {
             selectedMasjidId: selectedMasjidWithDistance.masjid.id,
           });
         }}

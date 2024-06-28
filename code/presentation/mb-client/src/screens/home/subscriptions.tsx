@@ -87,7 +87,7 @@ export const SubscriptionScreen = () => {
       {...item}
       onPress={() => {
         const selectedMasjidId = item.masjid.id;
-        navigate('MasjidScreen', { selectedMasjidId });
+        navigate('MasjidInfoScreen', { selectedMasjidId });
       }} // Adjust the property access based on the actual item structure
     />
   );
